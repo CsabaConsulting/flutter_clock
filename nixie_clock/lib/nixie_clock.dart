@@ -21,15 +21,15 @@ enum _Element {
 }
 
 final _lightTheme = {
-  _Element.background: Color(0xFF81B3FE),
-  _Element.text: Colors.white,
-  _Element.shadow: Colors.black,
+  _Element.background: Color(0xFFEFEEEA),
+  _Element.text: Color(0xFFFCD905),
+  _Element.shadow: Color(0xFFE5010E),
 };
 
 final _darkTheme = {
-  _Element.background: Colors.black,
-  _Element.text: Colors.white,
-  _Element.shadow: Color(0xFF174EA6),
+  _Element.background: Color(0xFF0F0000),
+  _Element.text: Color(0xFFFCD905),
+  _Element.shadow: Color(0xFFE5010E),
 };
 
 /// Nixie + VFD retro clock.
