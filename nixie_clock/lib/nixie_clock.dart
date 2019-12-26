@@ -28,12 +28,16 @@ final _lightTheme = {
   _Element.background: Color(0xFFEFEEEA),
   _Element.nixieOn: Color(0xFFFCD905),
   _Element.nixieGlow: Color(0xFFE5010E),
+  _Element.vfdText: Color(0xFF42D0D4),
+  _Element.vfdBackground: Color(0xFF1A2E39),
 };
 
 final _darkTheme = {
   _Element.background: Color(0xFF0F0000),
   _Element.nixieOn: Color(0xFFFCD905),
   _Element.nixieGlow: Color(0xFFE5010E),
+  _Element.vfdText: Color(0xFF42D0D4),
+  _Element.vfdBackground: Color(0xFF1A2E39),
 };
 
 /// Nixie + VFD retro clock.
@@ -50,10 +54,9 @@ class NixieClock extends StatefulWidget {
 
 class _NixieClockState extends State<NixieClock> {
   DateTime _now = DateTime.now();
-//  var _temperature = '';
-//  var _temperatureRange = '';
-//  var _condition = '';
-//  var _location = '';
+  var _temperatureAndCondition = '';
+  var _temperatureRange = '';
+  var _location = '';
   Timer _timer;
 
   @override
@@ -83,7 +86,9 @@ class _NixieClockState extends State<NixieClock> {
 
   void _updateModel() {
     setState(() {
-      // Cause the clock to rebuild when the model changes.
+      _temperatureAndCondition = '${widget.model.temperatureString}, ${widget.model.weatherString}';
+      _temperatureRange = '(Low ${widget.model.low} - High ${widget.model.highString})';
+      _location = widget.model.location;
     });
   }
 
@@ -135,7 +140,7 @@ class _NixieClockState extends State<NixieClock> {
       ],
     );
     // Vacuum Fluorescent Display section Style
-    final vfdFontSize = nixieFontSize / 4;
+    final vfdFontSize = nixieFontSize / 2.5;
     final vfdStyle = TextStyle(
       color: colors[_Element.vfdText],
       fontFamily: 'VT323',
@@ -235,10 +240,18 @@ class _NixieClockState extends State<NixieClock> {
               ],
             ),
           ),
-          DefaultTextStyle(
-            style: vfdStyle,
-            child: Column(
-
+          Container(
+            color: colors[_Element.vfdBackground],
+            child: DefaultTextStyle(
+              style: vfdStyle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(_temperatureAndCondition),
+                  Text(_temperatureRange),
+                  Text(_location),
+                ],
+              ),
             ),
           ),
         ],
