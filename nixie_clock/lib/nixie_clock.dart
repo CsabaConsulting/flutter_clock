@@ -16,20 +16,24 @@ import 'package:hexagonal_grid_widget/hex_grid_widget.dart';
 
 enum _Element {
   background,
-  text,
-  shadow,
+  nixieOn,
+  nixieGlow,
+  nixieGrid,
+  vfdText,
+  vfdBackground,
+  vfdGrid,
 }
 
 final _lightTheme = {
   _Element.background: Color(0xFFEFEEEA),
-  _Element.text: Color(0xFFFCD905),
-  _Element.shadow: Color(0xFFE5010E),
+  _Element.nixieOn: Color(0xFFFCD905),
+  _Element.nixieGlow: Color(0xFFE5010E),
 };
 
 final _darkTheme = {
   _Element.background: Color(0xFF0F0000),
-  _Element.text: Color(0xFFFCD905),
-  _Element.shadow: Color(0xFFE5010E),
+  _Element.nixieOn: Color(0xFFFCD905),
+  _Element.nixieGlow: Color(0xFFE5010E),
 };
 
 /// Nixie + VFD retro clock.
@@ -45,7 +49,11 @@ class NixieClock extends StatefulWidget {
 }
 
 class _NixieClockState extends State<NixieClock> {
-  DateTime _dateTime = DateTime.now();
+  DateTime _now = DateTime.now();
+//  var _temperature = '';
+//  var _temperatureRange = '';
+//  var _condition = '';
+//  var _location = '';
   Timer _timer;
 
   @override
@@ -81,11 +89,11 @@ class _NixieClockState extends State<NixieClock> {
 
   void _updateTime() {
     setState(() {
-      _dateTime = DateTime.now();
+      _now = DateTime.now();
       // Update once per second, but make sure to do it at the beginning of each
       // new second, so that the clock is accurate.
       _timer = Timer(
-        Duration(seconds: 1) - Duration(milliseconds: _dateTime.millisecond),
+        Duration(seconds: 1) - Duration(milliseconds: _now.millisecond),
         _updateTime,
       );
     });
@@ -97,7 +105,7 @@ class _NixieClockState extends State<NixieClock> {
         ? _lightTheme
         : _darkTheme;
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
-    final timeFull = DateFormat(timeFormat).format(_dateTime);
+    final timeFull = DateFormat(timeFormat).format(_now);
     final timeParts = timeFull.split(':');
     final hours = timeParts[0];
     final hourDigit1 = hours.length > 1 ? hours[0] : '';
@@ -109,85 +117,131 @@ class _NixieClockState extends State<NixieClock> {
     final secondDigit1 = seconds[0];
     final secondDigit2 = seconds[1];
 
-    final fontSize = MediaQuery.of(context).size.width / 4.5;
-    final offset = fontSize / 7;
-    final widgetWidth = fontSize / 1.6;
-    final colonWidth = fontSize / 4;
-    final defaultStyle = TextStyle(
-      color: colors[_Element.text],
+    final mediaSize = MediaQuery.of(context).size;
+    final nixieFontSize = min(mediaSize.height / 3, mediaSize.width / 4.5);
+    final nixieWidgetWidth = nixieFontSize / 1.6;
+    final nixieColonWidth = nixieFontSize / 4;
+    // Nixie Tube section Style
+    final nixieStyle = TextStyle(
+      color: colors[_Element.nixieOn],
       fontFamily: 'TTChocolates',
-      fontSize: fontSize,
+      fontSize: nixieFontSize,
       shadows: [
         Shadow(
           blurRadius: 20,
-          color: colors[_Element.shadow],
+          color: colors[_Element.nixieGlow],
           offset: Offset(0, 0),
         ),
       ],
     );
+    // Vacuum Fluorescent Display section Style
+    final vfdFontSize = nixieFontSize / 4;
+    final vfdStyle = TextStyle(
+      color: colors[_Element.vfdText],
+      fontFamily: 'VT323',
+      fontSize: vfdFontSize,
+    );
 
     return Container(
       color: colors[_Element.background],
-      child: Center(
-        child: DefaultTextStyle(
-          style: defaultStyle,
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                  left: offset,
-                  top: offset,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          DefaultTextStyle(
+            style: nixieStyle,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: nixieWidgetWidth,
                   child: Center(
-                      child: Text(hourDigit1),
+                    child: Stack(
+                      children: <Widget>[
+                        Text(hourDigit1),
+                      ],
+                    ),
                   ),
-              ),
-              Positioned(
-                  left: offset + widgetWidth,
-                  top: offset,
+                ),
+                Container(
+                  width: nixieWidgetWidth,
                   child: Center(
-                      child: Text(hourDigit2),
+                    child: Stack(
+                      children: <Widget>[
+                        Text(hourDigit2),
+                      ],
+                    ),
                   ),
-              ),
-              Positioned(
-                  left: offset + 2 * widgetWidth,
-                  top: offset,
-                  child: Center(child: Text(':')),
-              ),
-              Positioned(
-                  left: offset + 2 * widgetWidth + colonWidth,
-                  top: offset,
+                ),
+                Container(
+                  width: nixieColonWidth,
                   child: Center(
-                      child: Text(minuteDigit1),
+                    child: Stack(
+                      children: <Widget>[
+                        Text(':'),
+                      ],
+                    ),
                   ),
-              ),
-              Positioned(
-                  left: offset + 3 * widgetWidth + colonWidth,
-                  top: offset,
+                ),
+                Container(
+                  width: nixieWidgetWidth,
                   child: Center(
-                      child: Text(minuteDigit2),
+                    child: Stack(
+                      children: <Widget>[
+                        Text(minuteDigit1),
+                      ],
+                    ),
                   ),
-              ),
-              Positioned(
-                  left: offset + 4 * widgetWidth + colonWidth,
-                  top: offset,
-                  child: Center(child: Text(':')),
-              ),
-              Positioned(
-                  left: offset + 4 * widgetWidth + 2 * colonWidth,
-                  top: offset,
+                ),
+                Container(
+                  width: nixieWidgetWidth,
                   child: Center(
-                      child: Text(secondDigit1),
+                    child: Stack(
+                      children: <Widget>[
+                        Text(minuteDigit2),
+                      ],
+                    ),
                   ),
-              ),
-              Positioned(
-                  left: offset + 5 * widgetWidth + 2 * colonWidth,
-                  top: offset,
+                ),
+                Container(
+                  width: nixieColonWidth,
                   child: Center(
-                      child: Text(secondDigit2),
+                    child: Stack(
+                      children: <Widget>[
+                        Text(':'),
+                      ],
+                    ),
                   ),
-              ),
-            ],
+                ),
+                Container(
+                  width: nixieWidgetWidth,
+                  child: Center(
+                    child: Stack(
+                      children: <Widget>[
+                        Text(secondDigit1),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: nixieWidgetWidth,
+                  child: Center(
+                    child: Stack(
+                      children: <Widget>[
+                        Text(secondDigit2),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          DefaultTextStyle(
+            style: vfdStyle,
+            child: Column(
+
+            ),
+          ),
+        ],
       ),
     );
   }
