@@ -13,13 +13,16 @@ import 'package:hexagonal_grid/hexagonal_grid.dart';
 import 'package:hexagonal_grid_widget/hex_grid_child.dart';
 import 'package:hexagonal_grid_widget/hex_grid_context.dart';
 import 'package:hexagonal_grid_widget/hex_grid_widget.dart';
+import 'grid_pattern_painter.dart';
 
 enum _Element {
   background,
   nixieOn,
   nixieGlow,
   nixieGrid,
-  vfdText,
+  vfdTextOn,
+  vfdTextGlow,
+  vfdTextOff,
   vfdBackground,
   vfdGrid,
 }
@@ -28,16 +31,22 @@ final _lightTheme = {
   _Element.background: Color(0xFFEFEEEA),
   _Element.nixieOn: Color(0xFFFCD905),
   _Element.nixieGlow: Color(0xFFE5010E),
-  _Element.vfdText: Color(0xFF42D0D4),
+  _Element.vfdTextOn: Color(0xFFBBFEFF),
+  _Element.vfdTextGlow: Color(0xFFCBFFFF),
+  _Element.vfdTextOff: Color(0xFF364852),
   _Element.vfdBackground: Color(0xFF1A2E39),
+  _Element.vfdGrid: Color(0xFF42D0D4),
 };
 
 final _darkTheme = {
   _Element.background: Color(0xFF0F0000),
   _Element.nixieOn: Color(0xFFFCD905),
   _Element.nixieGlow: Color(0xFFE5010E),
-  _Element.vfdText: Color(0xFF42D0D4),
+  _Element.vfdTextOn: Color(0xFFBBFEFF),
+  _Element.vfdTextGlow: Color(0xFFCBFFFF),
+  _Element.vfdTextOff: Color(0xFF364852),
   _Element.vfdBackground: Color(0xFF1A2E39),
+  _Element.vfdGrid: Color(0xFF42D0D4),
 };
 
 /// Nixie + VFD retro clock.
@@ -146,9 +155,14 @@ class _NixieClockState extends State<NixieClock> {
     // Vacuum Fluorescent Display section Style
     final vfdFontSize = nixieFontSize / 2.5;
     final vfdStyle = TextStyle(
-      color: colors[_Element.vfdText],
+      color: colors[_Element.vfdTextOn],
       fontFamily: 'VT323',
       fontSize: vfdFontSize,
+    );
+    final vfdGridPainter = GridPatternPainter(
+      patternSize: Size(vfdFontSize / 2.5, vfdFontSize),
+      gridColor: colors[_Element.vfdGrid],
+      backgroundColor: colors[_Element.vfdBackground],
     );
 
     return Container(
@@ -245,16 +259,24 @@ class _NixieClockState extends State<NixieClock> {
             ),
           ),
           Container(
-            color: colors[_Element.vfdBackground],
-            child: DefaultTextStyle(
-              style: vfdStyle,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(_temperatureAndCondition),
-                  Text(_temperatureRange),
-                  Text(_location),
-                ],
+            padding: new EdgeInsets.all(20.0),
+            decoration: new BoxDecoration(
+              color: colors[_Element.vfdBackground],
+              borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
+            ),
+            child: CustomPaint(
+              painter: vfdGridPainter,
+              child: DefaultTextStyle(
+                style: vfdStyle,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_temperatureAndCondition),
+                    Text(_temperatureRange),
+                    Text(_location),
+                  ],
+                ),
               ),
             ),
           ),
