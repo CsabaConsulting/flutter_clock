@@ -9,8 +9,10 @@ import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
-import 'vfd_painter.dart';
+
+import 'hexagon_painter.dart';
 import 'nixie_tube.dart';
+import 'vfd_painter.dart';
 
 enum _Element {
   background,
@@ -186,6 +188,12 @@ class _NixieClockState extends State<NixieClock> {
       backgroundPaint: null,
     );
 
+    final hexagonPainter = HexagonPainter(
+      areaSize: characterSize,
+      side: 10,
+      gridLinePaint: vfdForegroundGridLinePaint,
+    );
+
     return Container(
       color: colors[_Element.background],
       child: Column(
@@ -199,41 +207,49 @@ class _NixieClockState extends State<NixieClock> {
                 digit: hourDigit1,
                 width: nixieWidgetWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: hourDigit2,
                 width: nixieWidgetWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: ':',
                 width: nixieColonWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: minuteDigit1,
                 width: nixieWidgetWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: minuteDigit2,
                 width: nixieWidgetWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: ':',
                 width: nixieColonWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: secondDigit1,
                 width: nixieWidgetWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
               NixieTubeWidget(
                 digit: secondDigit2,
                 width: nixieWidgetWidth,
                 style: nixieStyle,
+                gridPainter: hexagonPainter,
               ),
             ],
           ),

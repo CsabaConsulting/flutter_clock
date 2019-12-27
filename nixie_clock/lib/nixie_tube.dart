@@ -6,11 +6,12 @@ import 'package:hexagonal_grid_widget/hex_grid_widget.dart';
 
 
 class NixieTubeWidget extends StatelessWidget {
-  NixieTubeWidget({this.digit, this.width, this.style});
+  NixieTubeWidget({this.digit, this.width, this.style, this.gridPainter});
   /// Digit to display
   final String digit;
   final double width;
   final TextStyle style;
+  final CustomPainter gridPainter;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,9 @@ class NixieTubeWidget extends StatelessWidget {
             DefaultTextStyle(
               style: style,
               child: Text(digit)
+            ),
+            CustomPaint(
+              painter: gridPainter,
             ),
           ],
         ),
