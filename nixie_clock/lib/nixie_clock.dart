@@ -13,7 +13,7 @@ import 'package:hexagonal_grid/hexagonal_grid.dart';
 import 'package:hexagonal_grid_widget/hex_grid_child.dart';
 import 'package:hexagonal_grid_widget/hex_grid_context.dart';
 import 'package:hexagonal_grid_widget/hex_grid_widget.dart';
-import 'grid_pattern_painter.dart';
+import 'vfd_painter.dart';
 
 enum _Element {
   background,
@@ -35,7 +35,7 @@ final _lightTheme = {
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
   _Element.vfdBackground: Color(0xFF1A2E39),
-  _Element.vfdGrid: Color(0xFF42D0D4),
+  _Element.vfdGrid: Color(0xBB1A2E39),
 };
 
 final _darkTheme = {
@@ -46,12 +46,10 @@ final _darkTheme = {
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
   _Element.vfdBackground: Color(0xFF1A2E39),
-  _Element.vfdGrid: Color(0xFF42D0D4),
+  _Element.vfdGrid: Color(0xBB1A2E39),
 };
 
 /// Nixie + VFD retro clock.
-///
-/// You can do better than this!
 class NixieClock extends StatefulWidget {
   const NixieClock(this.model);
 
@@ -159,10 +157,34 @@ class _NixieClockState extends State<NixieClock> {
       fontFamily: 'VT323',
       fontSize: vfdFontSize,
     );
-    final vfdGridPainter = GridPatternPainter(
-      patternSize: Size(vfdFontSize / 2.5, vfdFontSize),
-      gridColor: colors[_Element.vfdGrid],
-      backgroundColor: colors[_Element.vfdBackground],
+    final characterSize = Size(vfdFontSize / 2.5, vfdFontSize);
+    final pixelSize = Size(characterSize.width / 10, characterSize.height / 10);
+
+    final vfdBackgroundGridLinePaint = Paint()
+      ..color = colors[_Element.vfdBackground]
+      ..strokeWidth = 1
+      ..isAntiAlias = false;
+    final vfdBackgroundPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = colors[_Element.vfdTextOff];
+    final vfdGridBackgroundPainter = VFDPainter(
+      characterSize: characterSize,
+      characterMargin: pixelSize,
+      pixelSize: pixelSize,
+      gridLinePaint: vfdBackgroundGridLinePaint,
+      backgroundPaint: vfdBackgroundPaint,
+    );
+
+    final vfdForegroundGridLinePaint = Paint()
+      ..color = colors[_Element.vfdGrid]
+      ..strokeWidth = 1
+      ..isAntiAlias = false;
+    final vfdGridForegroundPainter = VFDPainter(
+      characterSize: characterSize,
+      characterMargin: pixelSize,
+      pixelSize: pixelSize,
+      gridLinePaint: vfdForegroundGridLinePaint,
+      backgroundPaint: null,
     );
 
     return Container(
@@ -265,7 +287,8 @@ class _NixieClockState extends State<NixieClock> {
               borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
             ),
             child: CustomPaint(
-              painter: vfdGridPainter,
+              painter: vfdGridBackgroundPainter,
+              foregroundPainter: vfdGridForegroundPainter,
               child: DefaultTextStyle(
                 style: vfdStyle,
                 child: Column(
