@@ -11,8 +11,6 @@ dependencies:
   flutter_clock_helper:
     path: ../flutter_clock_helper
   cupertino_icons: ^0.1.2
-  hexagonal_grid: ^1.0.5
-  hexagonal_grid_widget: ^1.0.3
 
 dev_dependencies:
   flutter_test:
