@@ -9,11 +9,8 @@ import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hexagonal_grid/hexagonal_grid.dart';
-import 'package:hexagonal_grid_widget/hex_grid_child.dart';
-import 'package:hexagonal_grid_widget/hex_grid_context.dart';
-import 'package:hexagonal_grid_widget/hex_grid_widget.dart';
 import 'vfd_painter.dart';
+import 'nixie_tube.dart';
 
 enum _Element {
   background,
@@ -93,8 +90,10 @@ class _NixieClockState extends State<NixieClock> {
 
   void _updateModel() {
     setState(() {
-      _temperatureAndCondition = '${widget.model.temperatureString}, ${widget.model.weatherString}';
-      _temperatureRange = '(Low ${widget.model.low} - High ${widget.model.highString})';
+      _temperatureAndCondition =
+        '${widget.model.temperatureString}, ${widget.model.weatherString}';
+      _temperatureRange =
+        '(Low ${widget.model.low} - High ${widget.model.highString})';
       _location = widget.model.location;
     });
   }
@@ -193,92 +192,50 @@ class _NixieClockState extends State<NixieClock> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          DefaultTextStyle(
-            style: nixieStyle,
-            child: Row(
-              children: <Widget>[
-                Container(
-                  width: nixieWidgetWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(hourDigit1),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieWidgetWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(hourDigit2),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieColonWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(':'),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieWidgetWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(minuteDigit1),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieWidgetWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(minuteDigit2),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieColonWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(':'),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieWidgetWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(secondDigit1),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: nixieWidgetWidth,
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Text(secondDigit2),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              NixieTubeWidget(
+                digit: hourDigit1,
+                width: nixieWidgetWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: hourDigit2,
+                width: nixieWidgetWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: ':',
+                width: nixieColonWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: minuteDigit1,
+                width: nixieWidgetWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: minuteDigit2,
+                width: nixieWidgetWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: ':',
+                width: nixieColonWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: secondDigit1,
+                width: nixieWidgetWidth,
+                style: nixieStyle,
+              ),
+              NixieTubeWidget(
+                digit: secondDigit2,
+                width: nixieWidgetWidth,
+                style: nixieStyle,
+              ),
+            ],
           ),
           Container(
             padding: new EdgeInsets.all(20.0),
