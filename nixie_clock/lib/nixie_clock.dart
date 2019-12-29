@@ -18,6 +18,7 @@ enum _Element {
   background,
   nixieOn,
   nixieGlow,
+  nixieOff,
   nixieGrid,
   vfdTextOn,
   vfdTextGlow,
@@ -28,8 +29,9 @@ enum _Element {
 
 final _lightTheme = {
   _Element.background: Color(0xFFEFEEEA),
-  _Element.nixieOn: Color(0xFFFCD905),
-  _Element.nixieGlow: Color(0xFFE5010E),
+  _Element.nixieOn: Color(0xBBFCD905),
+  _Element.nixieGlow: Color(0xBBE5010E),
+  _Element.nixieOff: Color(0x33364852),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -39,8 +41,9 @@ final _lightTheme = {
 
 final _darkTheme = {
   _Element.background: Color(0xFF0F0000),
-  _Element.nixieOn: Color(0xFFFCD905),
-  _Element.nixieGlow: Color(0xFFE5010E),
+  _Element.nixieOn: Color(0xBBFCD905),
+  _Element.nixieGlow: Color(0xBBE5010E),
+  _Element.nixieOff: Color(0x33364852),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -118,22 +121,12 @@ class _NixieClockState extends State<NixieClock> {
       double nixieFontSize)
   {
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
-    final timeFull = DateFormat(timeFormat).format(_now);
-    final timeParts = timeFull.split(':');
-    final hours = timeParts[0];
-    final hourDigit1 = hours[0];
-    final hourDigit2 = hours[1];
-    final minutes = timeParts[1];
-    final minuteDigit1 = minutes[0];
-    final minuteDigit2 = minutes[1];
-    final seconds = timeParts[2];
-    final secondDigit1 = seconds[0];
-    final secondDigit2 = seconds[1];
+    final timeString = DateFormat(timeFormat).format(_now);
 
     final nixieWidgetWidth = nixieFontSize / 1.6;
     final nixieColonWidth = nixieFontSize / 4;
     // Nixie Tube section Style
-    final nixieStyle = TextStyle(
+    final nixieOnStyle = TextStyle(
       color: colors[_Element.nixieOn],
       fontFamily: 'TTChocolates',
       fontSize: nixieFontSize,
@@ -144,6 +137,11 @@ class _NixieClockState extends State<NixieClock> {
           offset: Offset(0, 0),
         ),
       ],
+    );
+    final nixieOffStyle = TextStyle(
+      color: colors[_Element.nixieOff],
+      fontFamily: 'TTChocolates',
+      fontSize: nixieFontSize,
     );
 
     final hexagonGridLinePaint = Paint()
@@ -157,58 +155,22 @@ class _NixieClockState extends State<NixieClock> {
       gridLinePaint: hexagonGridLinePaint,
     );
 
+    final List<Widget> nixieCharacters = [];
+    timeString.split('').forEach((character) =>
+      nixieCharacters.add(
+          NixieTubeWidget(
+            character: character,
+            width: character == ':' ? nixieColonWidth : nixieWidgetWidth,
+            onStyle: nixieOnStyle,
+            offStyle: nixieOffStyle,
+            gridPainter: hexagonPainter,
+          )
+      )
+    );
+
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        NixieTubeWidget(
-          digit: hourDigit1,
-          width: nixieWidgetWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: hourDigit2,
-          width: nixieWidgetWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: ':',
-          width: nixieColonWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: minuteDigit1,
-          width: nixieWidgetWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: minuteDigit2,
-          width: nixieWidgetWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: ':',
-          width: nixieColonWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: secondDigit1,
-          width: nixieWidgetWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-        NixieTubeWidget(
-          digit: secondDigit2,
-          width: nixieWidgetWidth,
-          style: nixieStyle,
-          gridPainter: hexagonPainter,
-        ),
-      ],
+      children: nixieCharacters,
     );
   }
 
@@ -297,7 +259,8 @@ class _NixieClockState extends State<NixieClock> {
     return Container(
       color: colors[_Element.background],
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           buildNixiePart(context, colors, nixieFontSize),
