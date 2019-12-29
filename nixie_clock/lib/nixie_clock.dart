@@ -112,11 +112,11 @@ class _NixieClockState extends State<NixieClock> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).brightness == Brightness.light
-        ? _lightTheme
-        : _darkTheme;
+  Widget buildNixiePart(
+      BuildContext context,
+      Map<_Element, Color> colors,
+      double nixieFontSize)
+  {
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
     final timeFull = DateFormat(timeFormat).format(_now);
     final timeParts = timeFull.split(':');
@@ -130,8 +130,6 @@ class _NixieClockState extends State<NixieClock> {
     final secondDigit1 = seconds[0];
     final secondDigit2 = seconds[1];
 
-    final mediaSize = MediaQuery.of(context).size;
-    final nixieFontSize = min(mediaSize.height / 3, mediaSize.width / 4.5);
     final nixieWidgetWidth = nixieFontSize / 1.6;
     final nixieColonWidth = nixieFontSize / 4;
     // Nixie Tube section Style
@@ -147,6 +145,78 @@ class _NixieClockState extends State<NixieClock> {
         ),
       ],
     );
+
+    final hexagonGridLinePaint = Paint()
+      ..color = colors[_Element.vfdGrid]
+      ..strokeWidth = 1
+      ..isAntiAlias = true;
+
+    final hexagonPainter = HexagonPainter(
+      areaSize: Size(nixieWidgetWidth, nixieFontSize),
+      side: nixieFontSize / 50,
+      gridLinePaint: hexagonGridLinePaint,
+    );
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        NixieTubeWidget(
+          digit: hourDigit1,
+          width: nixieWidgetWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: hourDigit2,
+          width: nixieWidgetWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: ':',
+          width: nixieColonWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: minuteDigit1,
+          width: nixieWidgetWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: minuteDigit2,
+          width: nixieWidgetWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: ':',
+          width: nixieColonWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: secondDigit1,
+          width: nixieWidgetWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+        NixieTubeWidget(
+          digit: secondDigit2,
+          width: nixieWidgetWidth,
+          style: nixieStyle,
+          gridPainter: hexagonPainter,
+        ),
+      ],
+    );
+  }
+
+  Widget buildVFDPart(
+      BuildContext context,
+      Map<_Element, Color> colors,
+      double nixieFontSize)
+  {
     // Vacuum Fluorescent Display section Style
     final vfdFontSize = nixieFontSize / 2.5;
     final vfdStyle = TextStyle(
@@ -160,7 +230,7 @@ class _NixieClockState extends State<NixieClock> {
     final vfdBackgroundGridLinePaint = Paint()
       ..color = colors[_Element.vfdBackground]
       ..strokeWidth = 1
-      ..isAntiAlias = false;
+      ..isAntiAlias = true;
     final vfdBackgroundPaint = Paint()
       ..style = PaintingStyle.fill
       ..color = colors[_Element.vfdTextOff];
@@ -175,7 +245,7 @@ class _NixieClockState extends State<NixieClock> {
     final vfdForegroundGridLinePaint = Paint()
       ..color = colors[_Element.vfdGrid]
       ..strokeWidth = 1
-      ..isAntiAlias = false;
+      ..isAntiAlias = true;
     final vfdGridForegroundPainter = VFDPainter(
       characterSize: characterSize,
       characterMargin: pixelSize,
@@ -184,11 +254,39 @@ class _NixieClockState extends State<NixieClock> {
       backgroundPaint: null,
     );
 
-    final hexagonPainter = HexagonPainter(
-      areaSize: characterSize,
-      side: 10,
-      gridLinePaint: vfdForegroundGridLinePaint,
+    return Container(
+      padding: new EdgeInsets.all(20.0),
+      decoration: new BoxDecoration(
+        color: colors[_Element.vfdBackground],
+        borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
+      ),
+      child: CustomPaint(
+        painter: vfdGridBackgroundPainter,
+        foregroundPainter: vfdGridForegroundPainter,
+        child: DefaultTextStyle(
+          style: vfdStyle,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(_temperatureAndCondition),
+              Text(_temperatureRange),
+              Text(_location),
+            ],
+          ),
+        ),
+      ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).brightness == Brightness.light
+        ? _lightTheme
+        : _darkTheme;
+
+    final mediaSize = MediaQuery.of(context).size;
+    final nixieFontSize = min(mediaSize.height / 3, mediaSize.width / 4.5);
 
     return Container(
       color: colors[_Element.background],
@@ -196,82 +294,8 @@ class _NixieClockState extends State<NixieClock> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              NixieTubeWidget(
-                digit: hourDigit1,
-                width: nixieWidgetWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: hourDigit2,
-                width: nixieWidgetWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: ':',
-                width: nixieColonWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: minuteDigit1,
-                width: nixieWidgetWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: minuteDigit2,
-                width: nixieWidgetWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: ':',
-                width: nixieColonWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: secondDigit1,
-                width: nixieWidgetWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-              NixieTubeWidget(
-                digit: secondDigit2,
-                width: nixieWidgetWidth,
-                style: nixieStyle,
-                gridPainter: hexagonPainter,
-              ),
-            ],
-          ),
-          Container(
-            padding: new EdgeInsets.all(20.0),
-            decoration: new BoxDecoration(
-              color: colors[_Element.vfdBackground],
-              borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
-            ),
-            child: CustomPaint(
-              painter: vfdGridBackgroundPainter,
-              foregroundPainter: vfdGridForegroundPainter,
-              child: DefaultTextStyle(
-                style: vfdStyle,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_temperatureAndCondition),
-                    Text(_temperatureRange),
-                    Text(_location),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          buildNixiePart(context, colors, nixieFontSize),
+          buildVFDPart(context, colors, nixieFontSize),
         ],
       ),
     );
