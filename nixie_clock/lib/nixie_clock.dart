@@ -218,6 +218,7 @@ class _NixieClockState extends State<NixieClock> {
       double nixieFontSize)
   {
     // Vacuum Fluorescent Display section Style
+    final vfdWidth = nixieFontSize / 1.6 * 6;
     final vfdFontSize = nixieFontSize / 2.5;
     final vfdStyle = TextStyle(
       color: colors[_Element.vfdTextOn],
@@ -240,6 +241,7 @@ class _NixieClockState extends State<NixieClock> {
       pixelSize: pixelSize,
       gridLinePaint: vfdBackgroundGridLinePaint,
       backgroundPaint: vfdBackgroundPaint,
+      sideMargins: 40,
     );
 
     final vfdForegroundGridLinePaint = Paint()
@@ -252,6 +254,7 @@ class _NixieClockState extends State<NixieClock> {
       pixelSize: pixelSize,
       gridLinePaint: vfdForegroundGridLinePaint,
       backgroundPaint: null,
+      sideMargins: 40,
     );
 
     return Container(
@@ -265,14 +268,17 @@ class _NixieClockState extends State<NixieClock> {
         foregroundPainter: vfdGridForegroundPainter,
         child: DefaultTextStyle(
           style: vfdStyle,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_temperatureAndCondition),
-              Text(_temperatureRange),
-              Text(_location),
-            ],
+          child: SizedBox(
+            width: vfdWidth,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_temperatureAndCondition),
+                Text(_temperatureRange),
+                Text(_location),
+              ],
+            ),
           ),
         ),
       ),

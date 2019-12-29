@@ -7,6 +7,7 @@ class VFDPainter extends CustomPainter {
   Size pixelSize;
   Paint gridLinePaint;
   Paint backgroundPaint;
+  int sideMargins;
 
   VFDPainter({
     @required this.characterSize,
@@ -14,12 +15,14 @@ class VFDPainter extends CustomPainter {
     @required this.pixelSize,
     @required this.gridLinePaint,
     this.backgroundPaint,
+    @required this.sideMargins,
   })
       : assert(
           characterSize != null &&
           characterMargin != null &&
           pixelSize != null &&
-          gridLinePaint != null
+          gridLinePaint != null &&
+          sideMargins != null
       );
 
   void paintVFDDigitBackground(
@@ -48,7 +51,8 @@ class VFDPainter extends CustomPainter {
     final width = characterSize.width - characterMargin.width;
     final height = characterSize.height - characterMargin.height;
     for (var i = 0.0; i < size.height; i += characterSize.height) {
-      for (var j = 0.0; j < size.width; j += characterSize.width) {
+      for (var j = 0.0; j < size.width - sideMargins; j += characterSize.width)
+      {
         if (backgroundPaint != null) {
           final left = j;
           final top = i + characterMargin.height;
