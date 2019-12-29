@@ -112,10 +112,6 @@ class _NixieClockState extends State<NixieClock> {
     });
   }
 
-  String _nixieDigit(String inDigit) {
-    return inDigit == '1' ? 'I' : inDigit;
-  }
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).brightness == Brightness.light
@@ -125,14 +121,14 @@ class _NixieClockState extends State<NixieClock> {
     final timeFull = DateFormat(timeFormat).format(_now);
     final timeParts = timeFull.split(':');
     final hours = timeParts[0];
-    final hourDigit1 = _nixieDigit(hours.length > 1 ? hours[0] : '');
-    final hourDigit2 = _nixieDigit(hours[hours.length > 1 ? 1 : 0]);
+    final hourDigit1 = hours.length > 1 ? hours[0] : '';
+    final hourDigit2 = hours[hours.length > 1 ? 1 : 0];
     final minutes = timeParts[1];
-    final minuteDigit1 = _nixieDigit(minutes[0]);
-    final minuteDigit2 = _nixieDigit(minutes[1]);
+    final minuteDigit1 = minutes[0];
+    final minuteDigit2 = minutes[1];
     final seconds = timeParts[2];
-    final secondDigit1 = _nixieDigit(seconds[0]);
-    final secondDigit2 = _nixieDigit(seconds[1]);
+    final secondDigit1 = seconds[0];
+    final secondDigit2 = seconds[1];
 
     final mediaSize = MediaQuery.of(context).size;
     final nixieFontSize = min(mediaSize.height / 3, mediaSize.width / 4.5);

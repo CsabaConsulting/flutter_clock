@@ -18,7 +18,7 @@ class NixieTubeWidget extends StatelessWidget {
           children: <Widget>[
             DefaultTextStyle(
               style: style,
-              child: Text(digit)
+              child: Text(digit == '1' ? 'I' : digit)
             ),
             CustomPaint(
               painter: gridPainter,
