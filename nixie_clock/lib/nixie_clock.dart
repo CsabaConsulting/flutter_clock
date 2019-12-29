@@ -121,8 +121,8 @@ class _NixieClockState extends State<NixieClock> {
     final timeFull = DateFormat(timeFormat).format(_now);
     final timeParts = timeFull.split(':');
     final hours = timeParts[0];
-    final hourDigit1 = hours.length > 1 ? hours[0] : '';
-    final hourDigit2 = hours[hours.length > 1 ? 1 : 0];
+    final hourDigit1 = hours[0];
+    final hourDigit2 = hours[1];
     final minutes = timeParts[1];
     final minuteDigit1 = minutes[0];
     final minuteDigit2 = minutes[1];
