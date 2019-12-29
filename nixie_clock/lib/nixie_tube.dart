@@ -17,73 +17,24 @@ class NixieTubeWidget extends StatelessWidget {
   final CustomPainter gridPainter;
 
   Widget buildDigits(BuildContext context) {
-    // final digitOrder = '6574839201';
-    return Stack(
-      children: <Widget>[
+    final digitOrder = '6574839201';
+    final List<Widget> nixieDigits = [];
+    digitOrder.split('').forEach((digit) =>
+      nixieDigits.add(
         Center(
           child: DefaultTextStyle(
-            style: character == '6' ? onStyle : offStyle,
-            child: Text('6'),
+            style: character == digit ? onStyle : offStyle,
+            child: Text(digit == '1' ? 'I' : digit),
           )
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '5' ? onStyle : offStyle,
-            child: Text('5'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '7' ? onStyle : offStyle,
-            child: Text('7'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '4' ? onStyle : offStyle,
-            child: Text('4'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '8' ? onStyle : offStyle,
-            child: Text('8'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '3' ? onStyle : offStyle,
-            child: Text('3'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '9' ? onStyle : offStyle,
-            child: Text('9'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '2' ? onStyle : offStyle,
-            child: Text('2'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '0' ? onStyle : offStyle,
-            child: Text('0'),
-          ),
-        ),
-        Center(
-          child: DefaultTextStyle(
-            style: character == '1' ? onStyle : offStyle,
-            child: Text('I'),
-          ),
-        ),
+        )
+      )
+    );
+
+    return Stack(
+      children: nixieDigits,
 //        CustomPaint(
 //          foregroundPainter: gridPainter,
 //        ),
-      ],
     );
   }
 
