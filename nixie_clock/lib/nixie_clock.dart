@@ -7,8 +7,8 @@ import 'dart:math';
 
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 import 'hexagon_painter.dart';
 import 'nixie_tube.dart';
@@ -29,9 +29,9 @@ enum _Element {
 
 final _lightTheme = {
   _Element.background: Color(0xFFEFEEEA),
-  _Element.nixieOn: Color(0xBBFCD905),
-  _Element.nixieGlow: Color(0xBBE5010E),
-  _Element.nixieOff: Color(0x33364852),
+  _Element.nixieOn: Color(0xDDFFFF8C),
+  _Element.nixieGlow: Color(0xDDFEF06B),
+  _Element.nixieOff: Color(0xDDC58A68),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -41,9 +41,9 @@ final _lightTheme = {
 
 final _darkTheme = {
   _Element.background: Color(0xFF0F0000),
-  _Element.nixieOn: Color(0xBBFCD905),
-  _Element.nixieGlow: Color(0xBBE5010E),
-  _Element.nixieOff: Color(0x33364852),
+  _Element.nixieOn: Color(0xDDFFFF8C),
+  _Element.nixieGlow: Color(0xDDFEF06B),
+  _Element.nixieOff: Color(0xDDC58A68),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -98,7 +98,7 @@ class _NixieClockState extends State<NixieClock> {
       _temperatureAndCondition =
         '${widget.model.temperatureString}, ${widget.model.weatherString}';
       _temperatureRange =
-        '(Low ${widget.model.low} - High ${widget.model.highString})';
+        '(${widget.model.low} - ${widget.model.highString})';
       _location = widget.model.location;
     });
   }
