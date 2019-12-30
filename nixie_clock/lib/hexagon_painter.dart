@@ -36,9 +36,12 @@ class HexagonPainter extends CustomPainter {
       for (var x = 0; x < size.width / _hexWidth; x++) {
         final dy = _hexHeight * y + (x % 2) * (_hexHeight / 2);
 
-        final hex = _createHexagon(Offset(
+        final hex = _createHexagon(
+          Offset(
             x * 1.5 * side - _hexWidth / 2,
-            dy - _hexHeight / 2));
+            dy - _hexHeight / 2
+          )
+        );
         canvas.drawPath(hex, gridLinePaint);
 
         // NOTE: not doing edge tiling for now
