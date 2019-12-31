@@ -158,13 +158,13 @@ class _NixieClockState extends State<NixieClock> {
     final List<Widget> nixieCharacters = [];
     timeString.split('').forEach((character) =>
       nixieCharacters.add(
-          NixieTubeWidget(
-            character: character,
-            width: character == ':' ? nixieColonWidth : nixieWidgetWidth,
-            onStyle: nixieOnStyle,
-            offStyle: nixieOffStyle,
-            gridPainter: hexagonPainter,
-          )
+        NixieTubeWidget(
+          character: character,
+          width: character == ':' ? nixieColonWidth : nixieWidgetWidth,
+          onStyle: nixieOnStyle,
+          offStyle: nixieOffStyle,
+          gridPainter: hexagonPainter,
+        )
       )
     );
 
@@ -180,8 +180,8 @@ class _NixieClockState extends State<NixieClock> {
       double nixieFontSize)
   {
     // Vacuum Fluorescent Display section Style
-    final vfdWidth = nixieFontSize / 1.6 * 6;
-    final vfdFontSize = nixieFontSize / 2.5;
+    final vfdWidth = nixieFontSize * 6;
+    final vfdFontSize = nixieFontSize / 3;
     final vfdStyle = TextStyle(
       color: colors[_Element.vfdTextOn],
       fontFamily: 'VT323',
@@ -198,8 +198,8 @@ class _NixieClockState extends State<NixieClock> {
       ..style = PaintingStyle.fill
       ..color = colors[_Element.vfdTextOff];
     final vfdGridBackgroundPainter = VFDPainter(
-      characterSize: characterSize,
-      characterMargin: pixelSize,
+      charSize: characterSize,
+      charMargin: pixelSize,
       pixelSize: pixelSize,
       gridLinePaint: vfdBackgroundGridLinePaint,
       backgroundPaint: vfdBackgroundPaint,
@@ -211,8 +211,8 @@ class _NixieClockState extends State<NixieClock> {
       ..strokeWidth = 1
       ..isAntiAlias = true;
     final vfdGridForegroundPainter = VFDPainter(
-      characterSize: characterSize,
-      characterMargin: pixelSize,
+      charSize: characterSize,
+      charMargin: pixelSize,
       pixelSize: pixelSize,
       gridLinePaint: vfdForegroundGridLinePaint,
       backgroundPaint: null,
@@ -220,26 +220,30 @@ class _NixieClockState extends State<NixieClock> {
     );
 
     return Container(
-      padding: new EdgeInsets.all(20.0),
+      padding: new EdgeInsets.all(characterSize.width / 2),
       decoration: new BoxDecoration(
         color: colors[_Element.vfdBackground],
-        borderRadius: new BorderRadius.all(new Radius.circular(40.0)),
+        borderRadius: new BorderRadius.all(new Radius.circular(characterSize.width / 2)),
       ),
-      child: CustomPaint(
-        painter: vfdGridBackgroundPainter,
-        foregroundPainter: vfdGridForegroundPainter,
+      child: Container(
         child: DefaultTextStyle(
           style: vfdStyle,
-          child: SizedBox(
-            width: vfdWidth,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_temperatureAndCondition),
-                Text(_temperatureRange),
-                Text(_location),
-              ],
+          child: Center(
+            child: SizedBox(
+              width: vfdWidth,
+              child: CustomPaint(
+                painter: vfdGridBackgroundPainter,
+                foregroundPainter: vfdGridForegroundPainter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_temperatureAndCondition),
+                    Text(_temperatureRange),
+                    Text(_location),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
