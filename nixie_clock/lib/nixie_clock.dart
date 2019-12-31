@@ -220,7 +220,12 @@ class _NixieClockState extends State<NixieClock> {
     );
 
     return Container(
-      padding: new EdgeInsets.all(characterSize.width / 2),
+      padding: new EdgeInsets.fromLTRB(
+        characterSize.width,
+        characterSize.width / 4,
+        characterSize.width / 2,
+        characterSize.width / 2,
+      ),
       decoration: new BoxDecoration(
         color: colors[_Element.vfdBackground],
         borderRadius: new BorderRadius.all(new Radius.circular(characterSize.width / 2)),
