@@ -2,24 +2,24 @@ import 'package:flutter/widgets.dart';
 
 
 class VFDPainter extends CustomPainter {
-  Size characterSize;
-  Size characterMargin;
+  Size charSize;
+  Size charMargin;
   Size pixelSize;
   Paint gridLinePaint;
   Paint backgroundPaint;
   int sideMargins;
 
   VFDPainter({
-    @required this.characterSize,
-    @required this.characterMargin,
+    @required this.charSize,
+    @required this.charMargin,
     @required this.pixelSize,
     @required this.gridLinePaint,
     this.backgroundPaint,
     @required this.sideMargins,
   })
       : assert(
-          characterSize != null &&
-          characterMargin != null &&
+          charSize != null &&
+          charMargin != null &&
           pixelSize != null &&
           gridLinePaint != null &&
           sideMargins != null
@@ -48,14 +48,17 @@ class VFDPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final width = characterSize.width - characterMargin.width;
-    final height = characterSize.height - characterMargin.height;
-    for (var i = 0.0; i < size.height; i += characterSize.height) {
-      for (var j = 0.0; j < size.width - sideMargins; j += characterSize.width)
-      {
+    final width = charSize.width - charMargin.width;
+    final height = charSize.height - charMargin.height;
+    for (
+      var i = 0.0, col = 1;
+      i < size.height && col <= 3;
+      i += charSize.height, col += 1)
+    {
+      for (var j = 0.0; j < size.width - sideMargins; j += charSize.width) {
         if (backgroundPaint != null) {
           final left = j;
-          final top = i + characterMargin.height;
+          final top = i + charMargin.height;
           final rect = Rect.fromLTWH(left, top, width, height);
           canvas.drawRect(rect, backgroundPaint);
         }
