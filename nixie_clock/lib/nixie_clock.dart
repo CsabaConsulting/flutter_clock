@@ -128,7 +128,7 @@ class _NixieClockState extends State<NixieClock> {
     // Nixie Tube section Style
     final nixieOnStyle = TextStyle(
       color: colors[_Element.nixieOn],
-      fontFamily: 'TTChocolates',
+      fontFamily: 'Roboto',
       fontSize: nixieFontSize,
       shadows: [
         Shadow(
@@ -140,7 +140,7 @@ class _NixieClockState extends State<NixieClock> {
     );
     final nixieOffStyle = TextStyle(
       color: colors[_Element.nixieOff],
-      fontFamily: 'TTChocolates',
+      fontFamily: 'Roboto',
       fontSize: nixieFontSize,
     );
 
@@ -148,7 +148,6 @@ class _NixieClockState extends State<NixieClock> {
       ..color = colors[_Element.vfdGrid]
       ..strokeWidth = 1
       ..isAntiAlias = true;
-
     final hexagonPainter = HexagonPainter(
       areaSize: Size(nixieWidgetWidth, nixieFontSize),
       side: nixieFontSize / 50,
@@ -180,15 +179,16 @@ class _NixieClockState extends State<NixieClock> {
       double nixieFontSize)
   {
     // Vacuum Fluorescent Display section Style
-    final vfdWidth = nixieFontSize * 6;
     final vfdFontSize = nixieFontSize / 3;
     final vfdStyle = TextStyle(
       color: colors[_Element.vfdTextOn],
       fontFamily: 'VT323',
       fontSize: vfdFontSize,
     );
-    final characterSize = Size(vfdFontSize / 2.5, vfdFontSize);
-    final pixelSize = Size(characterSize.width / 10, characterSize.height / 10);
+    final charSize = Size(vfdFontSize / 2.5, vfdFontSize);
+    final vfdWidthUnadjusted = nixieFontSize * 6;
+    final vfdWidth = vfdWidthUnadjusted - vfdWidthUnadjusted % charSize.width;
+    final pixelSize = Size(charSize.width / 10, charSize.height / 10);
 
     final vfdBackgroundGridLinePaint = Paint()
       ..color = colors[_Element.vfdBackground]
@@ -198,7 +198,7 @@ class _NixieClockState extends State<NixieClock> {
       ..style = PaintingStyle.fill
       ..color = colors[_Element.vfdTextOff];
     final vfdGridBackgroundPainter = VFDPainter(
-      charSize: characterSize,
+      charSize: charSize,
       charMargin: pixelSize,
       pixelSize: pixelSize,
       gridLinePaint: vfdBackgroundGridLinePaint,
@@ -211,7 +211,7 @@ class _NixieClockState extends State<NixieClock> {
       ..strokeWidth = 1
       ..isAntiAlias = true;
     final vfdGridForegroundPainter = VFDPainter(
-      charSize: characterSize,
+      charSize: charSize,
       charMargin: pixelSize,
       pixelSize: pixelSize,
       gridLinePaint: vfdForegroundGridLinePaint,
@@ -221,34 +221,30 @@ class _NixieClockState extends State<NixieClock> {
 
     return Container(
       padding: new EdgeInsets.fromLTRB(
-        characterSize.width,
-        characterSize.width / 4,
-        characterSize.width / 2,
-        characterSize.width / 2,
+        charSize.width,
+        charSize.width / 4,
+        charSize.width / 2,
+        charSize.width / 2,
       ),
       decoration: new BoxDecoration(
         color: colors[_Element.vfdBackground],
-        borderRadius: new BorderRadius.all(new Radius.circular(characterSize.width / 2)),
+        borderRadius: new BorderRadius.all(new Radius.circular(charSize.width / 2)),
       ),
-      child: Container(
+      child: CustomPaint(
+        painter: vfdGridBackgroundPainter,
+        foregroundPainter: vfdGridForegroundPainter,
+        child: SizedBox(
+          width: vfdWidth,
         child: DefaultTextStyle(
           style: vfdStyle,
-          child: Center(
-            child: SizedBox(
-              width: vfdWidth,
-              child: CustomPaint(
-                painter: vfdGridBackgroundPainter,
-                foregroundPainter: vfdGridForegroundPainter,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_temperatureAndCondition),
-                    Text(_temperatureRange),
-                    Text(_location),
-                  ],
-                ),
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_temperatureAndCondition),
+                Text(_temperatureRange),
+                Text(_location),
+              ],
             ),
           ),
         ),

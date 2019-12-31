@@ -20,9 +20,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: TTChocolates
+    - family: Roboto
       fonts:
-        - asset: third_party/TypeType-TTChocolatesExtraLight.otf
+        - asset: third_party/roboto-mono-v7-latin-100.ttf
     - family: VT323
       fonts:
         - asset: third_party/vt323-v11-latin-regular.ttf
