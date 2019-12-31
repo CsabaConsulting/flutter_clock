@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 class NixieTubeWidget extends StatelessWidget {
@@ -15,17 +16,26 @@ class NixieTubeWidget extends StatelessWidget {
   final TextStyle onStyle;
   final TextStyle offStyle;
   final CustomPainter gridPainter;
+  final digitOrder = '657483920I'.split('');
 
   Widget buildDigits(BuildContext context) {
-    final digitOrder = '6574839201';
+    final char = character == '1' ? 'I' : character;
     final List<Widget> nixieDigits = [];
-    digitOrder.split('').forEach((digit) =>
+    digitOrder.where((digit) => digit != char).forEach((digit) =>
       nixieDigits.add(
         Center(
           child: DefaultTextStyle(
-            style: character == digit ? onStyle : offStyle,
-            child: Text(digit == '1' ? 'I' : digit),
+            style: offStyle,
+            child: Text(digit),
           )
+        )
+      )
+    );
+    nixieDigits.add(
+      Center(
+        child: DefaultTextStyle(
+          style: onStyle,
+          child: Text(char),
         )
       )
     );
