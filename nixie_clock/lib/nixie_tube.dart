@@ -16,12 +16,11 @@ class NixieTubeWidget extends StatelessWidget {
   final TextStyle onStyle;
   final TextStyle offStyle;
   final CustomPainter gridPainter;
-  final digitOrder = '657483920I'.split('');
+  final digitOrder = '6574839201'.split('');
 
   Widget buildDigits(BuildContext context) {
-    final char = character == '1' ? 'I' : character;
     final List<Widget> nixieDigits = [];
-    digitOrder.where((digit) => digit != char).forEach((digit) =>
+    digitOrder.where((digit) => digit != character).forEach((digit) =>
       nixieDigits.add(
         Center(
           child: DefaultTextStyle(
@@ -35,7 +34,7 @@ class NixieTubeWidget extends StatelessWidget {
       Center(
         child: DefaultTextStyle(
           style: onStyle,
-          child: Text(char),
+          child: Text(character),
         )
       )
     );
