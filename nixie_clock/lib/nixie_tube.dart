@@ -16,7 +16,7 @@ class NixieTubeWidget extends StatelessWidget {
   final TextStyle onStyle;
   final TextStyle offStyle;
   final CustomPainter gridPainter;
-  final digitOrder = '6574839201'.split('');
+  final digitOrder = ':6574839201'.split('');
 
   Widget buildDigits(BuildContext context) {
     final List<Widget> nixieDigits = [];
@@ -47,29 +47,11 @@ class NixieTubeWidget extends StatelessWidget {
     );
   }
 
-  Widget buildOther(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Center(
-            child: DefaultTextStyle(
-              style: onStyle,
-              child: Text(character),
-            )
-        ),
-//        CustomPaint(
-//          foregroundPainter: gridPainter,
-//        ),
-      ],
-    );
-  }
-
-  bool isDigit(String s, int idx) => (s.codeUnitAt(idx) ^ 0x30) <= 9;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      child: isDigit(character, 0) ? buildDigits(context) : buildOther(context)
+      child: buildDigits(context)
     );
   }
 }
