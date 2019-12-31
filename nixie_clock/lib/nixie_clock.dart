@@ -122,14 +122,13 @@ class _NixieClockState extends State<NixieClock> {
   {
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
     final timeString = DateFormat(timeFormat).format(_now);
-
     final nixieWidgetWidth = nixieFontSize / 1.6;
-    final nixieColonWidth = nixieFontSize / 4;
     // Nixie Tube section Style
     final nixieOnStyle = TextStyle(
       color: colors[_Element.nixieOn],
       fontFamily: 'Roboto',
       fontSize: nixieFontSize,
+      fontWeight: FontWeight.w100,
       shadows: [
         Shadow(
           blurRadius: 20,
@@ -142,6 +141,7 @@ class _NixieClockState extends State<NixieClock> {
       color: colors[_Element.nixieOff],
       fontFamily: 'Roboto',
       fontSize: nixieFontSize,
+      fontWeight: FontWeight.w100,
     );
 
     final hexagonGridLinePaint = Paint()
@@ -159,7 +159,6 @@ class _NixieClockState extends State<NixieClock> {
       nixieCharacters.add(
         NixieTubeWidget(
           character: character,
-          width: character == ':' ? nixieColonWidth : nixieWidgetWidth,
           onStyle: nixieOnStyle,
           offStyle: nixieOffStyle,
           gridPainter: hexagonPainter,
@@ -259,7 +258,7 @@ class _NixieClockState extends State<NixieClock> {
         : _darkTheme;
 
     final mediaSize = MediaQuery.of(context).size;
-    final nixieFontSize = min(mediaSize.height / 3, mediaSize.width / 4.5);
+    final nixieFontSize = min(mediaSize.height / 3.5, mediaSize.width / 5);
 
     return Container(
       color: colors[_Element.background],
