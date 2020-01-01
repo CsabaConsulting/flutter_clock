@@ -45,6 +45,7 @@ class NixieTubeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
       decoration: BoxDecoration(
         gradient: backgroundGradient,
       ),
