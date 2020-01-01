@@ -7,13 +7,15 @@ class NixieTubeWidget extends StatelessWidget {
     this.character,
     this.onStyle,
     this.offStyle,
-    this.gridPainter
+    this.gridPainter,
+    this.backgroundGradient,
   });
   /// Digit to display
   final String character;
   final TextStyle onStyle;
   final TextStyle offStyle;
   final CustomPainter gridPainter;
+  final RadialGradient backgroundGradient;
   final digitOrder = ':6574839201'.split('');
 
   Widget buildDigits(BuildContext context) {
@@ -43,6 +45,9 @@ class NixieTubeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        gradient: backgroundGradient,
+      ),
       child: CustomPaint(
         foregroundPainter: gridPainter,
         child: buildDigits(context),

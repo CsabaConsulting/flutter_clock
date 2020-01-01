@@ -20,6 +20,9 @@ enum _Element {
   nixieGlow,
   nixieOff,
   nixieGrid,
+  nixieBgGlow1,
+  nixieBgGlow2,
+  nixieBgGlow3,
   vfdTextOn,
   vfdTextGlow,
   vfdTextOff,
@@ -32,7 +35,10 @@ final _lightTheme = {
   _Element.nixieOn: Color(0xDDFFFF8C),
   _Element.nixieGlow: Color(0xDDFEF06B),
   _Element.nixieOff: Color(0xDDC58A68),
-  _Element.nixieGrid: Color(0xFF1A2E39),
+  _Element.nixieGrid: Color(0xFF364852),
+  _Element.nixieBgGlow1: Color(0x99FFAA0F),
+  _Element.nixieBgGlow2: Color(0x99FA611B),
+  _Element.nixieBgGlow3: Color(0x00FFAA0F),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -45,7 +51,10 @@ final _darkTheme = {
   _Element.nixieOn: Color(0xDDFFFF8C),
   _Element.nixieGlow: Color(0xDDFEF06B),
   _Element.nixieOff: Color(0xDDC58A68),
-  _Element.nixieGrid: Color(0xFF1A2E39),
+  _Element.nixieGrid: Color(0xFF364852),
+  _Element.nixieBgGlow1: Color(0x99FFAA0F),
+  _Element.nixieBgGlow2: Color(0x99FA611B),
+  _Element.nixieBgGlow3: Color(0x00FFAA0F),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -119,34 +128,44 @@ class _NixieClockState extends State<NixieClock> {
 
   Widget buildNixiePart(
       BuildContext context,
-      Map<_Element, Color> colors,
+      Map<_Element, Color> colorSet,
       double nixieFontSize)
   {
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
     final timeString = DateFormat(timeFormat).format(_now);
     // Nixie Tube section Style
     final nixieOnStyle = TextStyle(
-      color: colors[_Element.nixieOn],
+      color: colorSet[_Element.nixieOn],
       fontFamily: 'Roboto',
       fontSize: nixieFontSize,
       fontWeight: FontWeight.w100,
       shadows: [
         Shadow(
           blurRadius: 20,
-          color: colors[_Element.nixieGlow],
+          color: colorSet[_Element.nixieGlow],
           offset: Offset(0, 0),
         ),
       ],
     );
     final nixieOffStyle = TextStyle(
-      color: colors[_Element.nixieOff],
+      color: colorSet[_Element.nixieOff],
       fontFamily: 'Roboto',
       fontSize: nixieFontSize,
       fontWeight: FontWeight.w100,
     );
 
+    var backgroundGradient = RadialGradient(
+      center: const Alignment(0.06, 0.07),
+      radius: 0.9,
+      colors: [
+        colorSet[_Element.nixieBgGlow1],
+        colorSet[_Element.nixieBgGlow2],
+        colorSet[_Element.nixieBgGlow3],
+      ],
+      stops: [0.0, 0.5, 1.0],
+    );
     final hexagonGridLinePaint = Paint()
-      ..color = colors[_Element.nixieGrid]
+      ..color = colorSet[_Element.nixieGrid]
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
       ..isAntiAlias = true;
@@ -163,6 +182,7 @@ class _NixieClockState extends State<NixieClock> {
           onStyle: nixieOnStyle,
           offStyle: nixieOffStyle,
           gridPainter: hexagonPainter,
+          backgroundGradient: backgroundGradient,
         )
       )
     );
@@ -175,13 +195,13 @@ class _NixieClockState extends State<NixieClock> {
 
   Widget buildVFDPart(
       BuildContext context,
-      Map<_Element, Color> colors,
+      Map<_Element, Color> colorSet,
       double nixieFontSize)
   {
     // Vacuum Fluorescent Display section Style
     final vfdFontSize = nixieFontSize / 3;
     final vfdStyle = TextStyle(
-      color: colors[_Element.vfdTextOn],
+      color: colorSet[_Element.vfdTextOn],
       fontFamily: 'VT323',
       fontSize: vfdFontSize,
     );
@@ -191,13 +211,13 @@ class _NixieClockState extends State<NixieClock> {
     final pixelSize = Size(charSize.width / 10, charSize.height / 10);
 
     final vfdBackgroundGridLinePaint = Paint()
-      ..color = colors[_Element.vfdBackground]
+      ..color = colorSet[_Element.vfdBackground]
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
       ..isAntiAlias = false;
     final vfdBackgroundPaint = Paint()
       ..style = PaintingStyle.fill
-      ..color = colors[_Element.vfdTextOff];
+      ..color = colorSet[_Element.vfdTextOff];
     final vfdGridBackgroundPainter = VFDPainter(
       charSize: charSize,
       charMargin: pixelSize,
@@ -208,7 +228,7 @@ class _NixieClockState extends State<NixieClock> {
     );
 
     final vfdForegroundGridLinePaint = Paint()
-      ..color = colors[_Element.vfdGrid]
+      ..color = colorSet[_Element.vfdGrid]
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
       ..isAntiAlias = false;
@@ -229,8 +249,10 @@ class _NixieClockState extends State<NixieClock> {
         charSize.width / 2,
       ),
       decoration: new BoxDecoration(
-        color: colors[_Element.vfdBackground],
-        borderRadius: new BorderRadius.all(new Radius.circular(charSize.width / 2)),
+        color: colorSet[_Element.vfdBackground],
+        borderRadius: new BorderRadius.all(
+            new Radius.circular(charSize.width / 2),
+        ),
       ),
       child: CustomPaint(
         painter: vfdGridBackgroundPainter,
@@ -256,7 +278,7 @@ class _NixieClockState extends State<NixieClock> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).brightness == Brightness.light
+    final colorSet = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
 
@@ -264,14 +286,14 @@ class _NixieClockState extends State<NixieClock> {
     final nixieFontSize = min(mediaSize.height / 3.5, mediaSize.width / 5);
 
     return Container(
-      color: colors[_Element.background],
+      color: colorSet[_Element.background],
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          buildNixiePart(context, colors, nixieFontSize),
-          buildVFDPart(context, colors, nixieFontSize),
+          buildNixiePart(context, colorSet, nixieFontSize),
+          buildVFDPart(context, colorSet, nixieFontSize),
         ],
       ),
     );
