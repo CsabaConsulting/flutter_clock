@@ -23,6 +23,7 @@ enum _Element {
   nixieBgGlow1,
   nixieBgGlow2,
   nixieBgGlow3,
+  nixieGlass,
   vfdTextOn,
   vfdTextGlow,
   vfdTextOff,
@@ -39,6 +40,7 @@ final _lightTheme = {
   _Element.nixieBgGlow1: Color(0x99FFAA0F),
   _Element.nixieBgGlow2: Color(0x99FA611B),
   _Element.nixieBgGlow3: Color(0x00FFAA0F),
+  _Element.nixieGlass: Color(0xFF3D2021),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -55,6 +57,7 @@ final _darkTheme = {
   _Element.nixieBgGlow1: Color(0x99FFAA0F),
   _Element.nixieBgGlow2: Color(0x99FA611B),
   _Element.nixieBgGlow3: Color(0x00FFAA0F),
+  _Element.nixieGlass: Color(0xFF3D2021),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -169,9 +172,15 @@ class _NixieClockState extends State<NixieClock> {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1
       ..isAntiAlias = true;
+    final tubePaint = Paint()
+      ..color = colorSet[_Element.nixieGlass]
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3
+      ..isAntiAlias = true;
     final hexagonPainter = HexagonPainter(
       side: nixieFontSize / 40,
       gridLinePaint: hexagonGridLinePaint,
+      tubePaint: tubePaint,
     );
 
     final List<Widget> nixieCharacters = [];
@@ -242,16 +251,16 @@ class _NixieClockState extends State<NixieClock> {
     );
 
     return Container(
-      padding: new EdgeInsets.fromLTRB(
+      padding: EdgeInsets.fromLTRB(
         charSize.width,
         charSize.width / 4,
         charSize.width / 2,
         charSize.width / 2,
       ),
-      decoration: new BoxDecoration(
+      decoration: BoxDecoration(
         color: colorSet[_Element.vfdBackground],
-        borderRadius: new BorderRadius.all(
-            new Radius.circular(charSize.width / 2),
+        borderRadius: BorderRadius.all(
+          Radius.circular(charSize.width / 2),
         ),
       ),
       child: CustomPaint(

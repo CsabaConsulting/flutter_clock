@@ -12,14 +12,16 @@ enum HexaPosition {
 class HexagonPainter extends CustomPainter {
   double side;
   Paint gridLinePaint;
+  Paint tubePaint;
   final double _hexWidth;
   final double _hexHeight;
 
   HexagonPainter({
     this.side,
     @required this.gridLinePaint,
+    @required this.tubePaint,
   })
-      : assert(gridLinePaint != null),
+      : assert(gridLinePaint != null && tubePaint != null),
         _hexWidth = side * 2,
         _hexHeight = side * sqrt(3);
 
@@ -29,6 +31,7 @@ class HexagonPainter extends CustomPainter {
       HexaPosition vertical,
       bool evenColumn)
   {
+    // Pay attention to paint each segment only one time
     if (horizontal == HexaPosition.Start && vertical == HexaPosition.Start) {
       return Path()
         ..moveTo(offset.dx + 0, offset.dy + _hexHeight / 2)
@@ -88,6 +91,52 @@ class HexagonPainter extends CustomPainter {
     }
   }
 
+  Path _createTube(Canvas canvas, Size size) {
+    final tipRect = Rect.fromCircle(
+        center: Offset(size.width / 2, 2 * side),
+        radius: side
+    );
+
+    // Draw the glass tube
+    return Path()
+      ..moveTo(size.width / 2 - side, side)
+      ..arcTo(tipRect, pi, pi, false)
+      ..lineTo(size.width / 2 + side, 3 * side)
+      ..conicTo(
+        size.width / 2 + side, size.width / 4,
+        size.width * 3 / 4, size.width / 4,
+        2.0,
+      )
+      ..conicTo(
+        size.width, size.width / 4,
+        size.width, size.width / 2,
+        2.0,
+      )
+      ..lineTo(size.width, size.height - size.width / 2)
+      ..conicTo(
+        size.width, size.height - size.width / 4,
+        size.width - size.width / 4, size.height - size.width / 4,
+        2.0,
+      )
+      ..lineTo(size.width / 4, size.height - size.width / 4)
+      ..conicTo(
+        0, size.height - size.width / 4,
+        0, size.height - size.width / 2,
+        2.0,
+      )
+      ..lineTo(0, size.width / 2)
+      ..conicTo(
+        0, size.width / 4,
+        size.width / 4, size.width / 4,
+        2.0,
+      )
+      ..conicTo(
+        size.width / 2 - side, size.width / 4,
+        size.width / 2 - side, 2 * side,
+        2.0,
+      );
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     for (var y = 0; y < size.height / _hexHeight * 0.6; y++) {
@@ -111,10 +160,11 @@ class HexagonPainter extends CustomPainter {
           x % 2 == 0,
         );
         canvas.drawPath(hex, gridLinePaint);
-
-        // NOTE: not doing edge tiling for now
       }
     }
+
+    final tubePath = _createTube(canvas, size);
+    canvas.drawPath(tubePath, tubePaint);
   }
 
   @override
