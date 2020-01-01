@@ -32,6 +32,7 @@ final _lightTheme = {
   _Element.nixieOn: Color(0xDDFFFF8C),
   _Element.nixieGlow: Color(0xDDFEF06B),
   _Element.nixieOff: Color(0xDDC58A68),
+  _Element.nixieGrid: Color(0xFF1A2E39),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -44,6 +45,7 @@ final _darkTheme = {
   _Element.nixieOn: Color(0xDDFFFF8C),
   _Element.nixieGlow: Color(0xDDFEF06B),
   _Element.nixieOff: Color(0xDDC58A68),
+  _Element.nixieGrid: Color(0xFF1A2E39),
   _Element.vfdTextOn: Color(0xFFBBFEFF),
   _Element.vfdTextGlow: Color(0xFFCBFFFF),
   _Element.vfdTextOff: Color(0xFF364852),
@@ -122,7 +124,6 @@ class _NixieClockState extends State<NixieClock> {
   {
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
     final timeString = DateFormat(timeFormat).format(_now);
-    final nixieWidgetWidth = nixieFontSize / 1.6;
     // Nixie Tube section Style
     final nixieOnStyle = TextStyle(
       color: colors[_Element.nixieOn],
@@ -145,12 +146,12 @@ class _NixieClockState extends State<NixieClock> {
     );
 
     final hexagonGridLinePaint = Paint()
-      ..color = colors[_Element.vfdGrid]
+      ..color = colors[_Element.nixieGrid]
+      ..style = PaintingStyle.stroke
       ..strokeWidth = 1
       ..isAntiAlias = true;
     final hexagonPainter = HexagonPainter(
-      areaSize: Size(nixieWidgetWidth, nixieFontSize),
-      side: nixieFontSize / 50,
+      side: nixieFontSize / 40,
       gridLinePaint: hexagonGridLinePaint,
     );
 
@@ -191,8 +192,9 @@ class _NixieClockState extends State<NixieClock> {
 
     final vfdBackgroundGridLinePaint = Paint()
       ..color = colors[_Element.vfdBackground]
+      ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..isAntiAlias = true;
+      ..isAntiAlias = false;
     final vfdBackgroundPaint = Paint()
       ..style = PaintingStyle.fill
       ..color = colors[_Element.vfdTextOff];
@@ -207,8 +209,9 @@ class _NixieClockState extends State<NixieClock> {
 
     final vfdForegroundGridLinePaint = Paint()
       ..color = colors[_Element.vfdGrid]
+      ..style = PaintingStyle.stroke
       ..strokeWidth = 1
-      ..isAntiAlias = true;
+      ..isAntiAlias = false;
     final vfdGridForegroundPainter = VFDPainter(
       charSize: charSize,
       charMargin: pixelSize,

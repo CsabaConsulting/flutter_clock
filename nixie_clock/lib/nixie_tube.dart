@@ -5,14 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 class NixieTubeWidget extends StatelessWidget {
   NixieTubeWidget({
     this.character,
-    this.width,
     this.onStyle,
     this.offStyle,
     this.gridPainter
   });
   /// Digit to display
   final String character;
-  final double width;
   final TextStyle onStyle;
   final TextStyle offStyle;
   final CustomPainter gridPainter;
@@ -39,19 +37,16 @@ class NixieTubeWidget extends StatelessWidget {
       )
     );
 
-    return Stack(
-      children: nixieDigits,
-//        CustomPaint(
-//          foregroundPainter: gridPainter,
-//        ),
-    );
+    return Stack(children: nixieDigits);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      child: buildDigits(context)
+      child: CustomPaint(
+        foregroundPainter: gridPainter,
+        child: buildDigits(context),
+      ),
     );
   }
 }
