@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-import 'hexagon_painter.dart';
+import 'nixie_painter.dart';
 import 'nixie_tube.dart';
 import 'vfd_painter.dart';
 
@@ -175,9 +175,9 @@ class _NixieClockState extends State<NixieClock> {
     final tubePaint = Paint()
       ..color = colorSet[_Element.nixieGlass]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3
+      ..strokeWidth = 2
       ..isAntiAlias = true;
-    final hexagonPainter = HexagonPainter(
+    final hexagonPainter = NixiePainter(
       side: nixieFontSize / 40,
       gridLinePaint: hexagonGridLinePaint,
       tubePaint: tubePaint,
@@ -292,7 +292,7 @@ class _NixieClockState extends State<NixieClock> {
         : _darkTheme;
 
     final mediaSize = MediaQuery.of(context).size;
-    final nixieFontSize = min(mediaSize.height / 3.5, mediaSize.width / 5);
+    final nixieFontSize = min(mediaSize.height / 3.5, mediaSize.width / 5.1);
 
     return Container(
       color: colorSet[_Element.background],

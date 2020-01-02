@@ -9,14 +9,14 @@ enum HexaPosition {
   Stop,
 }
 
-class HexagonPainter extends CustomPainter {
+class NixiePainter extends CustomPainter {
   double side;
   Paint gridLinePaint;
   Paint tubePaint;
   final double _hexWidth;
   final double _hexHeight;
 
-  HexagonPainter({
+  NixiePainter({
     this.side,
     @required this.gridLinePaint,
     @required this.tubePaint,
@@ -137,18 +137,17 @@ class HexagonPainter extends CustomPainter {
       );
   }
 
-  @override
-  void paint(Canvas canvas, Size size) {
+  void paintHexagonalGrid(Canvas canvas, Size size) {
     for (var y = 0; y < size.height / _hexHeight * 0.6; y++) {
       for (var x = 0; x - 1 < size.width / _hexWidth; x++) {
         final dy = _hexHeight * y + (x % 2) * (_hexHeight / 2);
 
         final horizontal = x == 0 ? HexaPosition.Start :
-          (x + 1 >= size.width / _hexWidth ?
-          HexaPosition.Stop : HexaPosition.Center);
+        (x + 1 >= size.width / _hexWidth ?
+        HexaPosition.Stop : HexaPosition.Center);
         final vertical = y == 0 ? HexaPosition.Start :
-          (y + 1 >= size.height / _hexHeight ?
-          HexaPosition.Stop : HexaPosition.Center);
+        (y + 1 >= size.height / _hexHeight ?
+        HexaPosition.Stop : HexaPosition.Center);
 
         final hex = _createHexagon(
           Offset(
@@ -162,6 +161,11 @@ class HexagonPainter extends CustomPainter {
         canvas.drawPath(hex, gridLinePaint);
       }
     }
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    paintHexagonalGrid(canvas, size);
 
     final tubePath = _createTube(canvas, size);
     canvas.drawPath(tubePath, tubePaint);
