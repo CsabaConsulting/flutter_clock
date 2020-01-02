@@ -193,10 +193,16 @@ class _NixieClockState extends State<NixieClock> {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
       ..isAntiAlias = true;
+    final nixiePartStrokePaintThick = Paint()
+      ..color = colorSet[_Element.nixieGrid]
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..isAntiAlias = true;
     final nixieBackgroundPainter = NixieBackgroundPainter(
       side: nixieFontSize / 40,
       partFillPaint: nixiePartFillPaint,
       partStrokePaint: nixiePartStrokePaint,
+      partStrokePaintThick: nixiePartStrokePaintThick,
     );
 
     final List<Widget> nixieCharacters = [];
