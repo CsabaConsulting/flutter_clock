@@ -78,9 +78,10 @@ class NixieClock extends StatefulWidget {
 
 class _NixieClockState extends State<NixieClock> {
   DateTime _now = DateTime.now();
-  var _temperatureAndCondition = '';
-  var _temperatureRange = '';
+  var _temperature = '';
+  var _weather = '';
   var _location = '';
+  DateFormat dateFormat;
   Timer _timer;
 
   @override
@@ -110,10 +111,10 @@ class _NixieClockState extends State<NixieClock> {
 
   void _updateModel() {
     setState(() {
-      _temperatureAndCondition =
-        '${widget.model.temperatureString}, ${widget.model.weatherString}';
-      _temperatureRange =
-        '(${widget.model.low} - ${widget.model.highString})';
+      _temperature = '${widget.model.temperatureString}';
+      _weather =
+          '${widget.model.weatherString}, ' +
+          '(${widget.model.low} - ${widget.model.highString})';
       _location = widget.model.location;
     });
   }
@@ -273,6 +274,10 @@ class _NixieClockState extends State<NixieClock> {
       sideMargins: 40,
     );
 
+    final currentLocale = Localizations.localeOf(context).toString();
+    final dateString = DateFormat.yMMMd(currentLocale).format(_now);
+    final firstLine = '$dateString, $_temperature';
+
     return Container(
       padding: EdgeInsets.fromLTRB(
         charSize.width,
@@ -297,8 +302,8 @@ class _NixieClockState extends State<NixieClock> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_temperatureAndCondition),
-                Text(_temperatureRange),
+                Text(firstLine),
+                Text(_weather),
                 Text(_location),
               ],
             ),
