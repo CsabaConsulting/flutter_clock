@@ -19,7 +19,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: Roboto
+    - family: RobotoThin
       fonts:
         - asset: third_party/roboto-mono-v7-latin-100.ttf
     - family: VT323

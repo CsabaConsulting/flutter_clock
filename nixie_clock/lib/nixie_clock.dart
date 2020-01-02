@@ -139,7 +139,7 @@ class _NixieClockState extends State<NixieClock> {
     // Nixie Tube section Style
     final nixieOnStyle = TextStyle(
       color: colorSet[_Element.nixieOn],
-      fontFamily: 'Roboto',
+      fontFamily: 'RobotoThin',
       fontSize: nixieFontSize,
       fontWeight: FontWeight.w100,
       shadows: [
@@ -152,7 +152,7 @@ class _NixieClockState extends State<NixieClock> {
     );
     final nixieOffStyle = TextStyle(
       color: colorSet[_Element.nixieOff],
-      fontFamily: 'Roboto',
+      fontFamily: 'RobotoThin',
       fontSize: nixieFontSize,
       fontWeight: FontWeight.w100,
     );
