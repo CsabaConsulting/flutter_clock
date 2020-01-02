@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
+import 'nixie_background_painter.dart';
 import 'nixie_foreground_painter.dart';
 import 'nixie_tube.dart';
 import 'vfd_painter.dart';
@@ -183,6 +184,21 @@ class _NixieClockState extends State<NixieClock> {
       tubePaint: tubePaint,
     );
 
+    final nixiePartFillPaint = Paint()
+      ..color = colorSet[_Element.nixieGrid]
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true;
+    final nixiePartStrokePaint = Paint()
+      ..color = colorSet[_Element.nixieGrid]
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..isAntiAlias = true;
+    final nixieBackgroundPainter = NixieBackgroundPainter(
+      side: nixieFontSize / 40,
+      partFillPaint: nixiePartFillPaint,
+      partStrokePaint: nixiePartStrokePaint,
+    );
+
     final List<Widget> nixieCharacters = [];
     timeString.split('').forEach((character) =>
       nixieCharacters.add(
@@ -191,7 +207,7 @@ class _NixieClockState extends State<NixieClock> {
           onStyle: nixieOnStyle,
           offStyle: nixieOffStyle,
           foregroundPainter: nixieForegroundPainter,
-//          backgroundPainter: nixieBackgroundPainter,
+          backgroundPainter: nixieBackgroundPainter,
           backgroundGradient: backgroundGradient,
         )
       )
