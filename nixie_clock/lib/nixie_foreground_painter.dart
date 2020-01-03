@@ -116,14 +116,9 @@ class NixieForegroundPainter extends CustomPainter {
   }
 
   Path _createTube(Canvas canvas, Size size) {
-    final tipRect =
-        Rect.fromCircle(center: Offset(size.width / 2, 2 * side), radius: side);
-
     // Draw the glass tube
     return Path()
-      ..moveTo(size.width / 2 - side, side)
-      ..arcTo(tipRect, pi, pi, false)
-      ..lineTo(size.width / 2 + side, 3 * side)
+      ..moveTo(size.width / 2, 0)
       ..conicTo(
         size.width / 2 + side,
         size.width / 4,
@@ -165,8 +160,8 @@ class NixieForegroundPainter extends CustomPainter {
       ..conicTo(
         size.width / 2 - side,
         size.width / 4,
-        size.width / 2 - side,
-        2 * side,
+        size.width / 2,
+        0,
         2.0,
       );
   }
