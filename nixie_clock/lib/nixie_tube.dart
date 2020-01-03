@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class NixieTubeWidget extends StatelessWidget {
   NixieTubeWidget({
     this.character,
@@ -10,6 +9,7 @@ class NixieTubeWidget extends StatelessWidget {
     this.backgroundPainter,
     this.backgroundGradient,
   });
+
   /// Digit to display
   final String character;
   final TextStyle onStyle;
@@ -21,24 +21,18 @@ class NixieTubeWidget extends StatelessWidget {
 
   Widget buildDigits(BuildContext context) {
     final List<Widget> nixieDigits = [];
-    digitOrder.where((digit) => digit != character).forEach((digit) =>
-      nixieDigits.add(
-        Center(
-          child: DefaultTextStyle(
-            style: offStyle,
-            child: Text(digit),
-          )
-        )
-      )
-    );
-    nixieDigits.add(
-      Center(
+    digitOrder
+        .where((digit) => digit != character)
+        .forEach((digit) => nixieDigits.add(Center(
+                child: DefaultTextStyle(
+              style: offStyle,
+              child: Text(digit),
+            ))));
+    nixieDigits.add(Center(
         child: DefaultTextStyle(
-          style: onStyle,
-          child: Text(character),
-        )
-      )
-    );
+      style: onStyle,
+      child: Text(character),
+    )));
 
     return Stack(children: nixieDigits);
   }

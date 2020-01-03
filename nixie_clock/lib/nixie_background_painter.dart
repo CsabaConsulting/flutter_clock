@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
-
 class NixieBackgroundPainter extends CustomPainter {
   double side;
   Paint partFillPaint;
@@ -16,13 +15,10 @@ class NixieBackgroundPainter extends CustomPainter {
     @required this.partFillPaint,
     @required this.partStrokePaint,
     @required this.partStrokePaintThick,
-  })
-    : assert(
-        partFillPaint != null &&
-        partStrokePaint != null &&
-        partStrokePaintThick != null
-    ),
-      _hexHeight = side * sqrt(3);
+  })  : assert(partFillPaint != null &&
+            partStrokePaint != null &&
+            partStrokePaintThick != null),
+        _hexHeight = side * sqrt(3);
 
   Path _createBottom(Canvas canvas, Size size, double bottom) {
     return Path()

@@ -112,8 +112,7 @@ class _NixieClockState extends State<NixieClock> {
   void _updateModel() {
     setState(() {
       _temperature = '${widget.model.temperatureString}';
-      _weather =
-          '${widget.model.weatherString}, ' +
+      _weather = '${widget.model.weatherString}, ' +
           '(${widget.model.low} - ${widget.model.highString})';
       _location = widget.model.location;
     });
@@ -131,11 +130,8 @@ class _NixieClockState extends State<NixieClock> {
     });
   }
 
-  Widget buildNixiePart(
-      BuildContext context,
-      Map<_Element, Color> colorSet,
-      double nixieFontSize)
-  {
+  Widget buildNixiePart(BuildContext context, Map<_Element, Color> colorSet,
+      double nixieFontSize) {
     final timeFormat = widget.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
     final timeString = DateFormat(timeFormat).format(_now);
     // Nixie Tube section Style
@@ -207,18 +203,16 @@ class _NixieClockState extends State<NixieClock> {
     );
 
     final List<Widget> nixieCharacters = [];
-    timeString.split('').forEach((character) =>
-      nixieCharacters.add(
-        NixieTubeWidget(
-          character: character,
-          onStyle: nixieOnStyle,
-          offStyle: nixieOffStyle,
-          foregroundPainter: nixieForegroundPainter,
-          backgroundPainter: nixieBackgroundPainter,
-          backgroundGradient: backgroundGradient,
-        )
-      )
-    );
+    timeString
+        .split('')
+        .forEach((character) => nixieCharacters.add(NixieTubeWidget(
+              character: character,
+              onStyle: nixieOnStyle,
+              offStyle: nixieOffStyle,
+              foregroundPainter: nixieForegroundPainter,
+              backgroundPainter: nixieBackgroundPainter,
+              backgroundGradient: backgroundGradient,
+            )));
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -226,11 +220,8 @@ class _NixieClockState extends State<NixieClock> {
     );
   }
 
-  Widget buildVFDPart(
-      BuildContext context,
-      Map<_Element, Color> colorSet,
-      double nixieFontSize)
-  {
+  Widget buildVFDPart(BuildContext context, Map<_Element, Color> colorSet,
+      double nixieFontSize) {
     // Vacuum Fluorescent Display section Style
     final vfdFontSize = nixieFontSize / 3;
     final vfdStyle = TextStyle(
@@ -296,8 +287,8 @@ class _NixieClockState extends State<NixieClock> {
         foregroundPainter: vfdGridForegroundPainter,
         child: SizedBox(
           width: vfdWidth,
-        child: DefaultTextStyle(
-          style: vfdStyle,
+          child: DefaultTextStyle(
+            style: vfdStyle,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,

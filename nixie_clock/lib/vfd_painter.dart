@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-
 class VFDPainter extends CustomPainter {
   Size charSize;
   Size charMargin;
@@ -16,23 +15,14 @@ class VFDPainter extends CustomPainter {
     @required this.gridLinePaint,
     this.backgroundPaint,
     @required this.sideMargins,
-  })
-      : assert(
-          charSize != null &&
-          charMargin != null &&
-          pixelSize != null &&
-          gridLinePaint != null &&
-          sideMargins != null
-      );
+  }) : assert(charSize != null &&
+            charMargin != null &&
+            pixelSize != null &&
+            gridLinePaint != null &&
+            sideMargins != null);
 
-  void paintVFDDigitBackground(
-      Canvas canvas,
-      double digitTop,
-      double digitLeft,
-      double digitWidth,
-      double digitHeight,
-      Paint gridLinePaint)
-  {
+  void paintVFDDigitBackground(Canvas canvas, double digitTop, double digitLeft,
+      double digitWidth, double digitHeight, Paint gridLinePaint) {
     final top = digitTop + pixelSize.height;
     final right = digitLeft + digitWidth;
     for (var i = top; i < top + digitHeight; i += pixelSize.height) {
@@ -50,11 +40,9 @@ class VFDPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final width = charSize.width - charMargin.width;
     final height = charSize.height - charMargin.height;
-    for (
-      var i = 0.0, col = 1;
-      i < size.height && col <= 3;
-      i += charSize.height, col += 1)
-    {
+    for (var i = 0.0, col = 1;
+        i < size.height && col <= 3;
+        i += charSize.height, col += 1) {
       for (var j = 0.0; j < size.width - sideMargins; j += charSize.width) {
         if (backgroundPaint != null) {
           final left = j;

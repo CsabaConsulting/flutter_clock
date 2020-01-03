@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 
-
 enum HexPosition {
   Start,
   Center,
@@ -20,17 +19,12 @@ class NixieForegroundPainter extends CustomPainter {
     this.side,
     @required this.gridLinePaint,
     @required this.tubePaint,
-  })
-    : assert(gridLinePaint != null && tubePaint != null),
-      _hexWidth = side * 2,
-      _hexHeight = side * sqrt(3);
+  })  : assert(gridLinePaint != null && tubePaint != null),
+        _hexWidth = side * 2,
+        _hexHeight = side * sqrt(3);
 
-  Path _createHexagon(
-      Offset offset,
-      HexPosition horizontal,
-      HexPosition vertical,
-      bool evenColumn)
-  {
+  Path _createHexagon(Offset offset, HexPosition horizontal,
+      HexPosition vertical, bool evenColumn) {
     // Pay attention to paint each segment only one time
     if (horizontal == HexPosition.Start && vertical == HexPosition.Start) {
       return Path()
@@ -96,12 +90,16 @@ class NixieForegroundPainter extends CustomPainter {
       for (var x = 0; x - 1 < size.width / _hexWidth; x++) {
         final dy = _hexHeight * y + (x % 2) * (_hexHeight / 2);
 
-        final horizontal = x == 0 ? HexPosition.Start :
-        (x + 1 >= size.width / _hexWidth ?
-        HexPosition.Stop : HexPosition.Center);
-        final vertical = y == 0 ? HexPosition.Start :
-        (y + 1 >= size.height / _hexHeight ?
-        HexPosition.Stop : HexPosition.Center);
+        final horizontal = x == 0
+            ? HexPosition.Start
+            : (x + 1 >= size.width / _hexWidth
+                ? HexPosition.Stop
+                : HexPosition.Center);
+        final vertical = y == 0
+            ? HexPosition.Start
+            : (y + 1 >= size.height / _hexHeight
+                ? HexPosition.Stop
+                : HexPosition.Center);
 
         final hex = _createHexagon(
           Offset(
@@ -118,10 +116,8 @@ class NixieForegroundPainter extends CustomPainter {
   }
 
   Path _createTube(Canvas canvas, Size size) {
-    final tipRect = Rect.fromCircle(
-        center: Offset(size.width / 2, 2 * side),
-        radius: side
-    );
+    final tipRect =
+        Rect.fromCircle(center: Offset(size.width / 2, 2 * side), radius: side);
 
     // Draw the glass tube
     return Path()
@@ -129,36 +125,48 @@ class NixieForegroundPainter extends CustomPainter {
       ..arcTo(tipRect, pi, pi, false)
       ..lineTo(size.width / 2 + side, 3 * side)
       ..conicTo(
-        size.width / 2 + side, size.width / 4,
-        size.width * 3 / 4, size.width / 4,
+        size.width / 2 + side,
+        size.width / 4,
+        size.width * 3 / 4,
+        size.width / 4,
         2.0,
       )
       ..conicTo(
-        size.width, size.width / 4,
-        size.width, size.width / 2,
+        size.width,
+        size.width / 4,
+        size.width,
+        size.width / 2,
         2.0,
       )
       ..lineTo(size.width, size.height - size.width / 2)
       ..conicTo(
-        size.width, size.height - size.width / 4,
-        size.width - size.width / 4, size.height - size.width / 4,
+        size.width,
+        size.height - size.width / 4,
+        size.width - size.width / 4,
+        size.height - size.width / 4,
         2.0,
       )
       ..lineTo(size.width / 4, size.height - size.width / 4)
       ..conicTo(
-        0, size.height - size.width / 4,
-        0, size.height - size.width / 2,
+        0,
+        size.height - size.width / 4,
+        0,
+        size.height - size.width / 2,
         2.0,
       )
       ..lineTo(0, size.width / 2)
       ..conicTo(
-        0, size.width / 4,
-        size.width / 4, size.width / 4,
+        0,
+        size.width / 4,
+        size.width / 4,
+        size.width / 4,
         2.0,
       )
       ..conicTo(
-        size.width / 2 - side, size.width / 4,
-        size.width / 2 - side, 2 * side,
+        size.width / 2 - side,
+        size.width / 4,
+        size.width / 2 - side,
+        2 * side,
         2.0,
       );
   }
