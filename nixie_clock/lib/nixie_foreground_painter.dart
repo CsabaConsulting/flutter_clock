@@ -12,6 +12,7 @@ class NixieForegroundPainter extends CustomPainter {
   double side;
   Paint gridLinePaint;
   Paint tubePaint;
+  Paint legPaint;
   final double _hexWidth;
   final double _hexHeight;
 
@@ -19,7 +20,8 @@ class NixieForegroundPainter extends CustomPainter {
     this.side,
     @required this.gridLinePaint,
     @required this.tubePaint,
-  })  : assert(gridLinePaint != null && tubePaint != null),
+    @required this.legPaint,
+  })  : assert(gridLinePaint != null && tubePaint != null && legPaint != null),
         _hexWidth = side * 2,
         _hexHeight = side * sqrt(3);
 
@@ -175,7 +177,7 @@ class NixieForegroundPainter extends CustomPainter {
       canvas.drawLine(
         Offset(xPosition, bottom),
         Offset(xPosition, size.height - side),
-        tubePaint,
+        legPaint,
       );
     }
   }

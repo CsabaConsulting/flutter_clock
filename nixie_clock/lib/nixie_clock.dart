@@ -176,11 +176,19 @@ class _NixieClockState extends State<NixieClock> {
       ..color = colorSet[_Element.nixieGlass]
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
+      ..strokeJoin = StrokeJoin.round
+      ..isAntiAlias = true;
+    final legPaint = Paint()
+      ..color = colorSet[_Element.nixieGlass]
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round
       ..isAntiAlias = true;
     final nixieForegroundPainter = NixieForegroundPainter(
       side: nixieFontSize / 40,
       gridLinePaint: hexagonGridLinePaint,
       tubePaint: tubePaint,
+      legPaint: legPaint,
     );
 
     final nixiePartFillPaint = Paint()
