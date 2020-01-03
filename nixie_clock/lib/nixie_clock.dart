@@ -9,6 +9,7 @@ import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'nixie_background_painter.dart';
 import 'nixie_foreground_painter.dart';
@@ -87,6 +88,7 @@ class _NixieClockState extends State<NixieClock> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting();
     widget.model.addListener(_updateModel);
     _updateTime();
     _updateModel();
@@ -195,11 +197,17 @@ class _NixieClockState extends State<NixieClock> {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4
       ..isAntiAlias = true;
+    final nixieOffPaint = Paint()
+      ..color = colorSet[_Element.nixieOff]
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..isAntiAlias = true;
     final nixieBackgroundPainter = NixieBackgroundPainter(
       side: nixieFontSize / 40,
       partFillPaint: nixiePartFillPaint,
       partStrokePaint: nixiePartStrokePaint,
       partStrokePaintThick: nixiePartStrokePaintThick,
+      nixieOffPaint: nixieOffPaint,
     );
 
     final List<Widget> nixieCharacters = [];

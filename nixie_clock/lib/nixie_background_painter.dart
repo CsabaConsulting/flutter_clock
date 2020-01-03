@@ -8,6 +8,7 @@ class NixieBackgroundPainter extends CustomPainter {
   Paint partFillPaint;
   Paint partStrokePaint;
   Paint partStrokePaintThick;
+  Paint nixieOffPaint;
   final double _hexHeight;
 
   NixieBackgroundPainter({
@@ -15,9 +16,11 @@ class NixieBackgroundPainter extends CustomPainter {
     @required this.partFillPaint,
     @required this.partStrokePaint,
     @required this.partStrokePaintThick,
+    @required this.nixieOffPaint,
   })  : assert(partFillPaint != null &&
             partStrokePaint != null &&
-            partStrokePaintThick != null),
+            partStrokePaintThick != null &&
+            nixieOffPaint != null),
         _hexHeight = side * sqrt(3);
 
   Path _createBottom(Canvas canvas, Size size, double bottom) {
@@ -72,11 +75,34 @@ class NixieBackgroundPainter extends CustomPainter {
       partStrokePaint,
     );
 
-    // Ring
+    // Hexagon Hanger Ring
     canvas.drawCircle(
       Offset(size.width / 2, baseHeight - 3 * side - 2),
       side + 1,
       partStrokePaintThick,
+    );
+
+    // Digit Hanger Top Ring and Axle
+    canvas.drawCircle(
+      Offset(size.width / 2, baseHeight + 2 * side - 2),
+      side + 1,
+      nixieOffPaint,
+    );
+    canvas.drawCircle(
+      Offset(size.width / 2, baseHeight + 2 * side - 2),
+      4,
+      partFillPaint,
+    );
+    // Digit Hanger Bottom Ring and Axle
+    canvas.drawCircle(
+      Offset(size.width / 2, bottom - 1.5 * side),
+      side + 1,
+      nixieOffPaint,
+    );
+    canvas.drawCircle(
+      Offset(size.width / 2, bottom - 1.5 * side),
+      4,
+      partFillPaint,
     );
   }
 
