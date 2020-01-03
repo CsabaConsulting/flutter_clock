@@ -31,17 +31,7 @@ class NixieBackgroundPainter extends CustomPainter {
       ..lineTo(side * 3, bottom + _hexHeight + 2);
   }
 
-  @override
-  void paint(Canvas canvas, Size size) {
-    final baseHeight = size.height * 0.22 - _hexHeight / 2 - 1;
-    final bottom = baseHeight + size.height * 0.645;
-
-    // Bottom
-    final bottomPath = _createBottom(canvas, size, bottom);
-    bottomPath.close();
-    canvas.drawPath(bottomPath, partFillPaint);
-
-    // Top
+  void paintHexagonTop(Canvas canvas, Size size, double baseHeight) {
     canvas.drawRect(
       Rect.fromLTRB(
         side - 1,
@@ -62,8 +52,10 @@ class NixieBackgroundPainter extends CustomPainter {
       ),
       partStrokePaintThick,
     );
+  }
 
-    // Sides
+  void paintHexagonSides(
+      Canvas canvas, Size size, double baseHeight, double bottom) {
     canvas.drawLine(
       Offset(side - 2, baseHeight - _hexHeight / 1.5),
       Offset(side - 2, bottom + 1),
@@ -74,15 +66,17 @@ class NixieBackgroundPainter extends CustomPainter {
       Offset(size.width - side + 1, bottom + 1),
       partStrokePaint,
     );
+  }
 
-    // Hexagon Hanger Ring
+  void paintHexagonHangerRing(Canvas canvas, Size size, double baseHeight) {
     canvas.drawCircle(
       Offset(size.width / 2, baseHeight - 3 * side - 2),
       side + 1,
       partStrokePaintThick,
     );
+  }
 
-    // Digit Hanger Top Ring and Axle
+  void paintDigitHangerTopRing(Canvas canvas, Size size, double baseHeight) {
     canvas.drawCircle(
       Offset(size.width / 2, baseHeight + 2 * side - 2),
       side + 1,
@@ -93,7 +87,9 @@ class NixieBackgroundPainter extends CustomPainter {
       4,
       partFillPaint,
     );
-    // Digit Hanger Bottom Ring and Axle
+  }
+
+  void paintDigitHangerBottomRing(Canvas canvas, Size size, double bottom) {
     canvas.drawCircle(
       Offset(size.width / 2, bottom - 1.5 * side),
       side + 1,
@@ -104,6 +100,23 @@ class NixieBackgroundPainter extends CustomPainter {
       4,
       partFillPaint,
     );
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final baseHeight = size.height * 0.22 - _hexHeight / 2 - 1;
+    final bottom = baseHeight + size.height * 0.645;
+
+    // Bottom
+    final bottomPath = _createBottom(canvas, size, bottom);
+    bottomPath.close();
+    canvas.drawPath(bottomPath, partFillPaint);
+
+    paintHexagonTop(canvas, size, baseHeight);
+    paintHexagonSides(canvas, size, baseHeight, bottom);
+    paintHexagonHangerRing(canvas, size, baseHeight);
+    paintDigitHangerTopRing(canvas, size, baseHeight);
+    paintDigitHangerBottomRing(canvas, size, bottom);
   }
 
   @override
