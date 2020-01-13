@@ -6,7 +6,7 @@ class VFDPainter extends CustomPainter {
   Size pixelSize;
   Paint gridLinePaint;
   Paint backgroundPaint;
-  int sideMargins;
+  double sideMargins;
 
   VFDPainter({
     @required this.charSize,

@@ -328,7 +328,20 @@ class _NixieClockState extends State<NixieClock> {
         : _darkTheme;
 
     final mediaSize = MediaQuery.of(context).size;
-    final nixieFontSize = min(mediaSize.height / 3.5, mediaSize.width / 5.1);
+
+    // print('size: $mediaSize');
+
+    var widthDivider = 5.0;
+    if (mediaSize.width < 700) {
+      widthDivider = 5.5;
+    } else if (mediaSize.width < 1000) {
+      widthDivider = 5.1;
+    } else if (mediaSize.width < 1300) {
+      widthDivider = 5.05;
+    } else if (mediaSize.width < 1600) {
+      widthDivider = 4.9;
+    }
+    final nixieFontSize = min(mediaSize.height / 3.5, mediaSize.width / widthDivider);
 
     return Container(
       color: colorSet[_Element.background],
