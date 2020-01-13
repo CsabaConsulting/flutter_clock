@@ -239,16 +239,17 @@ class _NixieClockState extends State<NixieClock> {
   Widget buildVFDPart(BuildContext context, Map<_Element, Color> colorSet,
       double nixieFontSize) {
     // Vacuum Fluorescent Display section Style
-    final vfdFontSize = nixieFontSize / 3;
+    final vfdFontSize = nixieFontSize / 3.0;
     final vfdStyle = TextStyle(
       color: colorSet[_Element.vfdTextOn],
       fontFamily: 'VT323',
       fontSize: vfdFontSize,
     );
     final charSize = Size(vfdFontSize / 2.5, vfdFontSize);
-    final vfdWidthUnadjusted = nixieFontSize * 6;
+    final vfdWidthUnadjusted = nixieFontSize * 5.0;
     final vfdWidth = vfdWidthUnadjusted - vfdWidthUnadjusted % charSize.width;
-    final pixelSize = Size(charSize.width / 10, charSize.height / 10);
+    final pixelSize = Size(charSize.width / 5, charSize.height / 10);
+    final sideMargin = charSize.width / 4.0;
 
     final vfdBackgroundGridLinePaint = Paint()
       ..color = colorSet[_Element.vfdBackground]
@@ -264,7 +265,7 @@ class _NixieClockState extends State<NixieClock> {
       pixelSize: pixelSize,
       gridLinePaint: vfdBackgroundGridLinePaint,
       backgroundPaint: vfdBackgroundPaint,
-      sideMargins: 40,
+      sideMargins: sideMargin,
     );
 
     final vfdForegroundGridLinePaint = Paint()
@@ -278,7 +279,7 @@ class _NixieClockState extends State<NixieClock> {
       pixelSize: pixelSize,
       gridLinePaint: vfdForegroundGridLinePaint,
       backgroundPaint: null,
-      sideMargins: 40,
+      sideMargins: sideMargin,
     );
 
     final currentLocale = Localizations.localeOf(context).toString();
@@ -287,10 +288,10 @@ class _NixieClockState extends State<NixieClock> {
 
     return Container(
       padding: EdgeInsets.fromLTRB(
-        charSize.width,
-        charSize.width / 4,
-        charSize.width / 2,
-        charSize.width / 2,
+        sideMargin,
+        charSize.width / 4.0,
+        sideMargin,
+        charSize.width / 2.0,
       ),
       decoration: BoxDecoration(
         color: colorSet[_Element.vfdBackground],
@@ -301,12 +302,12 @@ class _NixieClockState extends State<NixieClock> {
       child: CustomPaint(
         painter: vfdGridBackgroundPainter,
         foregroundPainter: vfdGridForegroundPainter,
-        child: SizedBox(
-          width: vfdWidth,
-          child: DefaultTextStyle(
-            style: vfdStyle,
+        child: DefaultTextStyle(
+          style: vfdStyle,
+          child: SizedBox(
+            width: vfdWidth,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(firstLine),
