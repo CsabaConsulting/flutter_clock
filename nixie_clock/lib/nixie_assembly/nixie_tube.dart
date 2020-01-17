@@ -20,18 +20,26 @@ class NixieTube extends StatelessWidget {
 
   Widget buildDigits(BuildContext context) {
     final List<Widget> nixieDigits = [];
-    digitOrder
-        .where((digit) => digit != character)
-        .forEach((digit) => nixieDigits.add(Center(
-                child: DefaultTextStyle(
+    digitOrder.where(
+      (digit) => digit != character).forEach(
+        (digit) => nixieDigits.add(
+          Center(
+            child: DefaultTextStyle(
               style: offStyle,
               child: Text(digit),
-            ))));
-    nixieDigits.add(Center(
+            ),
+          ),
+        ),
+    );
+
+    nixieDigits.add(
+      Center(
         child: DefaultTextStyle(
-      style: onStyle,
-      child: Text(character),
-    )));
+          style: onStyle,
+          child: Text(character),
+        ),
+      ),
+    );
 
     return Stack(children: nixieDigits);
   }
@@ -40,9 +48,7 @@ class NixieTube extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
-      decoration: BoxDecoration(
-        gradient: backgroundGradient,
-      ),
+      decoration: BoxDecoration(gradient: backgroundGradient),
       child: CustomPaint(
         painter: backgroundPainter,
         foregroundPainter: foregroundPainter,

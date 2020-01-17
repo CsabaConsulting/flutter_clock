@@ -123,16 +123,16 @@ class NixieAssembly extends StatelessWidget {
     final timeString = DateFormat(timeFormat).format(state.rightNow);
 
     final List<Widget> nixieCharacters = [];
-    timeString
-        .split('')
-        .forEach((character) => nixieCharacters.add(NixieTube(
-      character: character,
-      onStyle: getOnStyle(),
-      offStyle: getOffStyle(),
-      foregroundPainter: getForegroundPainter(),
-      backgroundPainter: getBackgroundPainter(),
-      backgroundGradient: getBackgroundGradient(),
-    )));
+    timeString.split('').forEach((character) => nixieCharacters.add(
+      NixieTube(
+        character: character,
+        onStyle: getOnStyle(),
+        offStyle: getOffStyle(),
+        foregroundPainter: getForegroundPainter(),
+        backgroundPainter: getBackgroundPainter(),
+        backgroundGradient: getBackgroundGradient(),
+      )
+    ));
 
     return Row(
       mainAxisSize: MainAxisSize.min,
