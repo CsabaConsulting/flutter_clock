@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NixieTubeWidget extends StatelessWidget {
-  NixieTubeWidget({
+class NixieTube extends StatelessWidget {
+  NixieTube({
     this.character,
     this.onStyle,
     this.offStyle,
@@ -10,7 +10,6 @@ class NixieTubeWidget extends StatelessWidget {
     this.backgroundGradient,
   });
 
-  /// Digit to display
   final String character;
   final TextStyle onStyle;
   final TextStyle offStyle;

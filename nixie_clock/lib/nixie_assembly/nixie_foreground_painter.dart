@@ -27,7 +27,7 @@ class NixieForegroundPainter extends CustomPainter {
 
   Path _createHexagon(Offset offset, HexPosition horizontal,
       HexPosition vertical, bool evenColumn) {
-    // Pay attention to paint each segment only one time
+    // Pay attention to painting each segment only one time
     if (horizontal == HexPosition.Start && vertical == HexPosition.Start) {
       return Path()
         ..moveTo(offset.dx + 0, offset.dy + _hexHeight / 2)
