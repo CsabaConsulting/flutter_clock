@@ -7,6 +7,7 @@ class VFDPainter extends CustomPainter {
   Paint gridLinePaint;
   Paint backgroundPaint;
   double sideMargins;
+  final int maxRows = 3;
 
   VFDPainter({
     @required this.charSize,
@@ -53,7 +54,7 @@ class VFDPainter extends CustomPainter {
     final width = charSize.width - charMargin.width;
     final height = charSize.height - charMargin.height;
     for (var i = 0.0, col = 1;
-        i < size.height && col <= 3;
+        i < size.height && col <= maxRows;
         i += charSize.height, col += 1) {
       for (var j = 0.0; j < size.width - sideMargins; j += charSize.width) {
         if (backgroundPaint != null) {

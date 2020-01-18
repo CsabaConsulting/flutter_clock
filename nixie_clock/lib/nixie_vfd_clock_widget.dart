@@ -17,6 +17,7 @@ class NixieVFDClockWidget extends StatelessWidget {
     this.nixieFontSize,
   });
 
+  final aspectRatioForWidth = 3.5;
   final Map<ColorSelector, Color> colorSet;
   final double nixieFontSize;
 
@@ -41,7 +42,7 @@ class NixieVFDClockWidget extends StatelessWidget {
       widthDivider = 4.9;
     }
     final nixieFontSize =
-        min(mediaSize.height / 3.5, mediaSize.width / widthDivider);
+        min(mediaSize.height / aspectRatioForWidth, mediaSize.width / widthDivider);
 
     return Container(
       color: colorSet[ColorSelector.background],
