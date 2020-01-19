@@ -82,11 +82,6 @@ class NixieBackgroundPainter extends CustomPainter {
       side + 1,
       nixieOffPaint,
     );
-    canvas.drawCircle(
-      Offset(size.width / 2, baseHeight + 2 * side - 2),
-      4,
-      partFillPaint,
-    );
   }
 
   void paintDigitHangerBottomRing(Canvas canvas, Size size, double bottom) {
@@ -95,19 +90,13 @@ class NixieBackgroundPainter extends CustomPainter {
       side + 1,
       nixieOffPaint,
     );
-    canvas.drawCircle(
-      Offset(size.width / 2, bottom - 1.5 * side),
-      4,
-      partFillPaint,
-    );
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    final baseHeight = size.height * 0.22 - _hexHeight / 2 - 1;
+    final baseHeight = size.height * 0.22 - _hexHeight / 2.0 - 1.0;
     final bottom = baseHeight + size.height * 0.645;
 
-    // Bottom
     final bottomPath = _createBottom(canvas, size, bottom);
     bottomPath.close();
     canvas.drawPath(bottomPath, partFillPaint);

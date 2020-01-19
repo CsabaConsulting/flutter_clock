@@ -23,26 +23,19 @@ class NixieVFDClockWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorSet = Theme.of(context).brightness == Brightness.light
-        ? lightTheme
-        : darkTheme;
-
+    final brightness = Theme.of(context).brightness;
+    final colorSet = brightness == Brightness.light ? lightTheme : darkTheme;
     final mediaSize = MediaQuery.of(context).size;
 
-    // print('size: $mediaSize');
+    print('size: $mediaSize');
 
-    var widthDivider = 5.0;
-    if (mediaSize.width < 700) {
-      widthDivider = 5.5;
-    } else if (mediaSize.width < 1000) {
-      widthDivider = 5.1;
-    } else if (mediaSize.width < 1300) {
-      widthDivider = 5.05;
-    } else if (mediaSize.width < 1600) {
-      widthDivider = 4.9;
-    }
-    final nixieFontSize =
-        min(mediaSize.height / aspectRatioForWidth, mediaSize.width / widthDivider);
+    final lineSlope = -1.0 / 1500.0;
+    final lineOffset = 179.0 / 30.0;
+    final widthDivider = mediaSize.width * lineSlope + lineOffset;
+    final nixieFontSize = min(
+        mediaSize.height / aspectRatioForWidth,
+        mediaSize.width / widthDivider
+    );
 
     return Container(
       color: colorSet[ColorSelector.background],

@@ -170,7 +170,7 @@ class NixieForegroundPainter extends CustomPainter {
 
   void paintLegs(Canvas canvas, Size size) {
     final numLegs = 9;
-    final bottom = size.height - size.width / 4;
+    final bottom = size.height - size.width / 4.0 + 1.0;
     final spacing = (size.width - 4 * side) / numLegs;
     for (var x = 0; x < numLegs; x++) {
       final xPosition = 3 * side + x * spacing;

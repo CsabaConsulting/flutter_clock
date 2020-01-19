@@ -24,7 +24,7 @@ class NixieAssembly extends StatelessWidget {
       fontWeight: FontWeight.w100,
       shadows: [
         Shadow(
-          blurRadius: 20,
+          blurRadius: 20.0,
           color: colorSet[ColorSelector.nixieGlow],
           offset: Offset(0, 0),
         ),
@@ -54,36 +54,38 @@ class NixieAssembly extends StatelessWidget {
     );
   }
 
-  NixieForegroundPainter getForegroundPainter() {
+  NixieForegroundPainter getForegroundPainter(
+      double thinnerStroke, double thickerStroke) {
     final hexagonGridLinePaint = Paint()
       ..color = colorSet[ColorSelector.nixieGrid]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1
+      ..strokeWidth = 1.0
       ..isAntiAlias = true;
 
     final tubePaint = Paint()
       ..color = colorSet[ColorSelector.nixieGlass]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
+      ..strokeWidth = thinnerStroke
       ..strokeJoin = StrokeJoin.round
       ..isAntiAlias = true;
 
     final legPaint = Paint()
       ..color = colorSet[ColorSelector.nixieGlass]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4
+      ..strokeWidth = thickerStroke
       ..strokeCap = StrokeCap.round
       ..isAntiAlias = true;
 
     return NixieForegroundPainter(
-      side: nixieFontSize / 40,
+      side: nixieFontSize / 40.0,
       gridLinePaint: hexagonGridLinePaint,
       tubePaint: tubePaint,
       legPaint: legPaint,
     );
   }
 
-  NixieBackgroundPainter getBackgroundPainter() {
+  NixieBackgroundPainter getBackgroundPainter(
+      double thinnerStroke, double thickerStroke) {
     final nixiePartFillPaint = Paint()
       ..color = colorSet[ColorSelector.nixieGrid]
       ..style = PaintingStyle.fill
@@ -92,23 +94,23 @@ class NixieAssembly extends StatelessWidget {
     final nixiePartStrokePaint = Paint()
       ..color = colorSet[ColorSelector.nixieGrid]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
+      ..strokeWidth = thinnerStroke
       ..isAntiAlias = true;
 
     final nixiePartStrokePaintThick = Paint()
       ..color = colorSet[ColorSelector.nixieGrid]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4
+      ..strokeWidth = thickerStroke
       ..isAntiAlias = true;
 
     final nixieOffPaint = Paint()
       ..color = colorSet[ColorSelector.nixieOff]
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4
+      ..strokeWidth = thickerStroke
       ..isAntiAlias = true;
 
     return NixieBackgroundPainter(
-      side: nixieFontSize / 40,
+      side: nixieFontSize / 40.0,
       partFillPaint: nixiePartFillPaint,
       partStrokePaint: nixiePartStrokePaint,
       partStrokePaintThick: nixiePartStrokePaintThick,
@@ -122,14 +124,20 @@ class NixieAssembly extends StatelessWidget {
     final timeFormat = state.model.is24HourFormat ? 'HH:mm:ss' : 'hh:mm:ss';
     final timeString = DateFormat(timeFormat).format(state.rightNow);
 
+    final mediaWidth = MediaQuery.of(context).size.width;
+    final thinnerStroke = mediaWidth < 1000 ? 1.0 : 2.0;
+    final thickerStroke = mediaWidth < 1000
+        ? 1.0
+        : (mediaWidth < 1300 ? 2.0 : mediaWidth < 1600 ? 3 : 4.0);
+
     final List<Widget> nixieCharacters = [];
     timeString.split('').forEach((character) => nixieCharacters.add(
       NixieTube(
         character: character,
         onStyle: getOnStyle(),
         offStyle: getOffStyle(),
-        foregroundPainter: getForegroundPainter(),
-        backgroundPainter: getBackgroundPainter(),
+        foregroundPainter: getForegroundPainter(thinnerStroke, thickerStroke),
+        backgroundPainter: getBackgroundPainter(thinnerStroke, thickerStroke),
         backgroundGradient: getBackgroundGradient(),
       )
     ));
