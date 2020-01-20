@@ -6,8 +6,6 @@ class VFDPainter extends CustomPainter {
   Size pixelSize;
   Paint gridLinePaint;
   Paint backgroundPaint;
-  double sideMargins;
-  final int maxRows = 3;
 
   VFDPainter({
     @required this.charSize,
@@ -15,15 +13,13 @@ class VFDPainter extends CustomPainter {
     @required this.pixelSize,
     @required this.gridLinePaint,
     this.backgroundPaint,
-    @required this.sideMargins,
   }) : assert(charSize != null &&
             charMargin != null &&
             pixelSize != null &&
-            gridLinePaint != null &&
-            sideMargins != null);
+            gridLinePaint != null);
 
-  void paintHorizontalControlGridLineBackground(Canvas canvas, double digitTop,
-      double digitLeft, double digitWidth, double digitHeight) {
+  void paintHorizontalControlGridLineBackground(Canvas canvas, double digitLeft,
+      double digitTop, double digitWidth, double digitHeight) {
     final top = digitTop + pixelSize.height;
     final right = digitLeft + digitWidth;
     for (var i = top; i < top + digitHeight; i += pixelSize.height) {
@@ -31,8 +27,8 @@ class VFDPainter extends CustomPainter {
     }
   }
 
-  void paintVerticalControlGridLineBackground(Canvas canvas, double digitTop,
-      double digitLeft, double digitWidth, double digitHeight) {
+  void paintVerticalControlGridLineBackground(Canvas canvas, double digitLeft,
+      double digitTop, double digitWidth, double digitHeight) {
     final left = digitLeft + pixelSize.width;
     digitTop += pixelSize.height;
     final bottom = digitTop + digitHeight;
@@ -41,32 +37,24 @@ class VFDPainter extends CustomPainter {
     }
   }
 
-  void paintVFDDigitBackground(Canvas canvas, double digitTop, double digitLeft,
+  void paintVFDDigitBackground(Canvas canvas, double digitLeft, double digitTop,
       double digitWidth, double digitHeight) {
     paintHorizontalControlGridLineBackground(
-        canvas, digitTop, digitLeft, digitWidth, digitHeight);
+        canvas, digitLeft, digitTop, digitWidth, digitHeight);
     paintVerticalControlGridLineBackground(
-        canvas, digitTop, digitLeft, digitWidth, digitHeight);
+        canvas, digitLeft, digitTop, digitWidth, digitHeight);
   }
 
   @override
   void paint(Canvas canvas, Size size) {
     final width = charSize.width - charMargin.width;
     final height = charSize.height - charMargin.height;
-    for (var i = 0.0, col = 1;
-        i < size.height && col <= maxRows;
-        i += charSize.height, col += 1) {
-      for (var j = 0.0; j < size.width - sideMargins; j += charSize.width) {
-        if (backgroundPaint != null) {
-          final left = j;
-          final top = i + charMargin.height;
-          final rect = Rect.fromLTWH(left, top, width, height);
-          canvas.drawRect(rect, backgroundPaint);
-        }
-
-        paintVFDDigitBackground(canvas, i, j, width, height);
+      if (backgroundPaint != null) {
+        final rect = Rect.fromLTWH(2, charMargin.height, width, height);
+        canvas.drawRect(rect, backgroundPaint);
       }
-    }
+
+      paintVFDDigitBackground(canvas, 2, 0, width, height);
   }
 
   @override

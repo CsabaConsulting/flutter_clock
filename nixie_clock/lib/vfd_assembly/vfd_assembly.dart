@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../color_configuration.dart';
 import '../nixie_vfd_clock.dart';
+import 'vfd_line.dart';
 import 'vfd_painter.dart';
 
 class VFDAssembly extends StatelessWidget {
@@ -14,8 +15,7 @@ class VFDAssembly extends StatelessWidget {
   final Map<ColorSelector, Color> colorSet;
   final double nixieFontSize;
 
-  VFDPainter getBackgroundPainter(
-      Size charSize, Size pixelSize, double sideMargin) {
+  VFDPainter getBackgroundPainter(Size charSize, Size pixelSize) {
     final vfdBackgroundGridLinePaint = Paint()
       ..color = colorSet[ColorSelector.vfdBackground]
       ..style = PaintingStyle.stroke
@@ -32,12 +32,10 @@ class VFDAssembly extends StatelessWidget {
       pixelSize: pixelSize,
       gridLinePaint: vfdBackgroundGridLinePaint,
       backgroundPaint: vfdBackgroundPaint,
-      sideMargins: sideMargin,
     );
   }
 
-  VFDPainter getForegroundPainter(
-      Size charSize, Size pixelSize, double sideMargin) {
+  VFDPainter getForegroundPainter(Size charSize, Size pixelSize) {
     final vfdForegroundGridLinePaint = Paint()
       ..color = colorSet[ColorSelector.vfdGrid]
       ..style = PaintingStyle.stroke
@@ -50,7 +48,6 @@ class VFDAssembly extends StatelessWidget {
       pixelSize: pixelSize,
       gridLinePaint: vfdForegroundGridLinePaint,
       backgroundPaint: null,
-      sideMargins: sideMargin,
     );
   }
 
@@ -64,7 +61,7 @@ class VFDAssembly extends StatelessWidget {
     );
     final charSize = Size(vfdFontSize / 2.5, vfdFontSize);
     final vfdWidthUnadjusted = nixieFontSize * 5.0;
-    final vfdWidth = vfdWidthUnadjusted - vfdWidthUnadjusted % charSize.width;
+    final maxChars = vfdWidthUnadjusted ~/ charSize.width;
     final pixelSize = Size(charSize.width / 5, charSize.height / 10);
     final sideMargin = charSize.width / 4.0;
 
@@ -72,6 +69,23 @@ class VFDAssembly extends StatelessWidget {
     final currentLocale = Localizations.localeOf(context).toString();
     final dateString = DateFormat.yMMMd(currentLocale).format(state.rightNow);
     final firstLine = '$dateString, ${state.temperature}';
+
+    final VFDPainter backgroundPainter = getBackgroundPainter(charSize, pixelSize);
+    final VFDPainter foregroundPainter = getForegroundPainter(charSize, pixelSize);
+
+    final List<String> lineStrings = [firstLine, state.weather, state.location];
+    final List<Widget> vfdLines = [];
+    lineStrings.forEach((line) => vfdLines.add(
+      VFDLine(
+        text: line,
+        maxChars: maxChars,
+        charSize: charSize,
+        charMargin: pixelSize,
+        pixelSize: pixelSize,
+        backgroundPainter: backgroundPainter,
+        foregroundPainter: foregroundPainter,
+      )
+    ));
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -87,22 +101,9 @@ class VFDAssembly extends StatelessWidget {
         ),
       ),
       child: CustomPaint(
-        painter: getBackgroundPainter(charSize, pixelSize, sideMargin),
-        foregroundPainter: getForegroundPainter(charSize, pixelSize, sideMargin),
         child: DefaultTextStyle(
           style: vfdStyle,
-          child: SizedBox(
-            width: vfdWidth,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(firstLine),
-                Text(state.weather),
-                Text(state.location),
-              ],
-            ),
-          ),
+          child: Column(children: vfdLines),
         ),
       ),
     );

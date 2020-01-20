@@ -12,14 +12,7 @@ import 'nixie_assembly/nixie_assembly.dart';
 import 'vfd_assembly/vfd_assembly.dart';
 
 class NixieVFDClockWidget extends StatelessWidget {
-  NixieVFDClockWidget({
-    this.colorSet,
-    this.nixieFontSize,
-  });
-
   final aspectRatioForWidth = 3.5;
-  final Map<ColorSelector, Color> colorSet;
-  final double nixieFontSize;
 
   @override
   Widget build(BuildContext context) {
