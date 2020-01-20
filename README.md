@@ -1,15 +1,8 @@
-# Flutter Clock
+# Nixie Clock
 
-Welcome to Flutter Clock!
+Nixie Clock is a clock inspired by DIY Nixie tube clocks sprinkled with a retro style VFD (Vacuum Fluorescent Display) lower section for information display.
+See a [live demo](https://csabaconsulting.github.io/flutter_clock) with Flutter for Web (best viewed with Chrome, Firefox has horizontal sizing differences in the NixieTube)!
 
-See [flutter.dev/clock](https://flutter.dev/clock) for how to get started, submission requirements, contest rules, and FAQs.
+<img src='https://github.com/CsabaConsulting/flutter_clock/blob/gh-pages/nixie_light.jpg' width='350'>
 
-See a [live demo](https://maryx.github.io/flutter_clock) with Flutter for Web!
-
-Example [Analog Clock](analog_clock)
-
-<img src='analog_clock/analog.gif' width='350'>
-
-Example [Digital Clock](digital_clock)
-
-<img src='digital_clock/digital.gif' width='350'>
+It is developed for the Google Flutter Clock contest, see [flutter.dev/clock](https://flutter.dev/clock) for more info.
