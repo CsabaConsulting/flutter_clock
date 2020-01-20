@@ -1,16 +1,9 @@
 # Nixie Clock
 
-This clock displays the time emulating a Nixie tube.
-It is part of a contest called [Flutter Clock](https://flutter.dev/clock).
-The emulation is not 100% perfect:
-1. The unlit digits are in the right order, but I needed to bring the lit digit to the front for a better visual
-2. The details could be better: some glare on the glass, etc.
+Nixie Clock is a clock inspired by DIY Nixie tube clocks sprinkled with a retro style VFD (Vacuum Fluorescent Display) lower section for information display.
+See a [live demo](https://csabaconsulting.github.io/flutter_clock) with Flutter for Web (best viewed with Chrome, Firefox has horizontal sizing differences in the NixieTube)!
+Check out [my blog](https://csaba.page/blog/) about details and motivations of this project.
 
-The clock also displays weather information on the bottom section emulating a
-VFD (Vacuum Fluorescent Display) section:
-1. The style emulates pixel style segments
-2. With a purchase of a 14 segment display font we could emulate a more LCD like VFD
+<img src='https://github.com/CsabaConsulting/flutter_clock/blob/gh-pages/nixie_light.jpg' width='350'>
 
-The clock has a light theme and a dark theme.
-See the [Analog Clock](../analog_clock) and [Digital Clock](../digital_clock)
-for basic examples by the Google Flutter team.
+It is developed for the Google Flutter Clock contest, see [flutter.dev/clock](https://flutter.dev/clock) for more info.
