@@ -35,13 +35,13 @@ class NixieAssembly extends StatelessWidget {
   RadialGradient getBackgroundGradient() {
     return RadialGradient(
       center: const Alignment(0.06, 0.07),
-      radius: 0.9,
+      radius: 1.0,
       colors: [
         colorSet[ColorSelector.nixieBgGlow1],
         colorSet[ColorSelector.nixieBgGlow2],
         colorSet[ColorSelector.nixieBgGlow3],
       ],
-      stops: [0.0, 0.5, 1.0],
+      stops: [0.0, 0.6, 1.0],
     );
   }
 

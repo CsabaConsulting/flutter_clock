@@ -27,8 +27,6 @@ class NixieVFDClockWidget extends StatelessWidget {
     final colorSet = brightness == Brightness.light ? lightTheme : darkTheme;
     final mediaSize = MediaQuery.of(context).size;
 
-    print('size: $mediaSize');
-
     final lineSlope = -1.0 / 1500.0;
     final lineOffset = 179.0 / 30.0;
     final widthDivider = mediaSize.width * lineSlope + lineOffset;
