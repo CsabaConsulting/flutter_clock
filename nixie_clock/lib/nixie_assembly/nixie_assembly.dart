@@ -131,16 +131,14 @@ class NixieAssembly extends StatelessWidget {
         : (mediaWidth < 1300 ? 2.0 : mediaWidth < 1600 ? 3 : 4.0);
 
     final List<Widget> nixieCharacters = [];
-    timeString.split('').forEach((character) => nixieCharacters.add(
-      NixieTube(
-        character: character,
-        onStyle: getOnStyle(),
-        offStyle: getOffStyle(),
-        foregroundPainter: getForegroundPainter(thinnerStroke, thickerStroke),
-        backgroundPainter: getBackgroundPainter(thinnerStroke, thickerStroke),
-        backgroundGradient: getBackgroundGradient(),
-      )
-    ));
+    timeString.split('').forEach((character) => nixieCharacters.add(NixieTube(
+          character: character,
+          onStyle: getOnStyle(),
+          offStyle: getOffStyle(),
+          foregroundPainter: getForegroundPainter(thinnerStroke, thickerStroke),
+          backgroundPainter: getBackgroundPainter(thinnerStroke, thickerStroke),
+          backgroundGradient: getBackgroundGradient(),
+        )));
 
     return Row(
       mainAxisSize: MainAxisSize.min,

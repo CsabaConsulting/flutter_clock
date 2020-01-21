@@ -49,12 +49,12 @@ class VFDPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final width = charSize.width - charMargin.width;
     final height = charSize.height - charMargin.height;
-      if (backgroundPaint != null) {
-        final rect = Rect.fromLTWH(2, charMargin.height, width, height);
-        canvas.drawRect(rect, backgroundPaint);
-      }
+    if (backgroundPaint != null) {
+      final rect = Rect.fromLTWH(2, charMargin.height, width, height);
+      canvas.drawRect(rect, backgroundPaint);
+    }
 
-      paintVFDDigitBackground(canvas, 2, 0, width, height);
+    paintVFDDigitBackground(canvas, 2, 0, width, height);
   }
 
   @override

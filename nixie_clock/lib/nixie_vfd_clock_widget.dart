@@ -24,9 +24,7 @@ class NixieVFDClockWidget extends StatelessWidget {
     final lineOffset = 179.0 / 30.0;
     final widthDivider = mediaSize.width * lineSlope + lineOffset;
     final nixieFontSize = min(
-        mediaSize.height / aspectRatioForWidth,
-        mediaSize.width / widthDivider
-    );
+        mediaSize.height / aspectRatioForWidth, mediaSize.width / widthDivider);
 
     return Container(
       color: colorSet[ColorSelector.background],

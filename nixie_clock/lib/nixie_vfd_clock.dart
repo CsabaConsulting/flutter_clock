@@ -10,7 +10,6 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 class _ClockInherited extends InheritedWidget {
   _ClockInherited({
     Key key,

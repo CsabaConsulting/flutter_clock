@@ -20,17 +20,16 @@ class NixieTube extends StatelessWidget {
 
   Widget buildDigits(BuildContext context) {
     final List<Widget> nixieDigits = [];
-    digitOrder.where(
-      (digit) => digit != character).forEach(
-        (digit) => nixieDigits.add(
-          Center(
-            child: DefaultTextStyle(
-              style: offStyle,
-              child: Text(digit),
+    digitOrder.where((digit) => digit != character).forEach(
+          (digit) => nixieDigits.add(
+            Center(
+              child: DefaultTextStyle(
+                style: offStyle,
+                child: Text(digit),
+              ),
             ),
           ),
-        ),
-    );
+        );
 
     nixieDigits.add(
       Center(

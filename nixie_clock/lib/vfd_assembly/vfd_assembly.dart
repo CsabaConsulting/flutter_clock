@@ -70,22 +70,19 @@ class VFDAssembly extends StatelessWidget {
     final dateString = DateFormat.yMMMd(currentLocale).format(state.rightNow);
     final firstLine = '$dateString, ${state.temperature}';
 
-    final VFDPainter backgroundPainter = getBackgroundPainter(charSize, pixelSize);
-    final VFDPainter foregroundPainter = getForegroundPainter(charSize, pixelSize);
+    final VFDPainter backgroundPainter =
+        getBackgroundPainter(charSize, pixelSize);
+    final VFDPainter foregroundPainter =
+        getForegroundPainter(charSize, pixelSize);
 
     final List<String> lineStrings = [firstLine, state.weather, state.location];
     final List<Widget> vfdLines = [];
-    lineStrings.forEach((line) => vfdLines.add(
-      VFDLine(
-        text: line,
-        maxChars: maxChars,
-        charSize: charSize,
-        charMargin: pixelSize,
-        pixelSize: pixelSize,
-        backgroundPainter: backgroundPainter,
-        foregroundPainter: foregroundPainter,
-      )
-    ));
+    lineStrings.forEach((line) => vfdLines.add(VFDLine(
+          text: line,
+          maxChars: maxChars,
+          backgroundPainter: backgroundPainter,
+          foregroundPainter: foregroundPainter,
+        )));
 
     return Container(
       padding: EdgeInsets.fromLTRB(
