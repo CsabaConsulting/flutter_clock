@@ -7,7 +7,6 @@ import 'dart:async';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class _ClockInherited extends InheritedWidget {
@@ -50,7 +49,6 @@ class ClockState extends State<NixieVFDClock> {
   var _temperature = '';
   var _weather = '';
   var _location = '';
-  DateFormat dateFormat;
   Timer _timer;
 
   DateTime get rightNow => _rightNow;
